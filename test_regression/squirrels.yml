@@ -1,0 +1,90 @@
+project_variables:
+  name: regression_test
+  label: Regression Test
+  major_version: 1
+  minor_version: 0
+
+
+packages: []
+
+
+connections:
+  - name: default
+    url: sqlite:///database/cc_fraud.db
+
+
+selection_test_sets: # TODO: change to proper test sets for this example
+  - name: sample_test_set
+    user_attributes:
+      organization: org1
+    parameters:
+      group_by: g3
+      start_date: 2023-02-01
+      end_date: 2023-12-01
+      category: ["1"]
+  
+  - name: sample_test_set_2
+    user_attributes:
+      organization: org1
+    parameters:
+      group_by: g4
+      start_date: 2018-02-01
+      end_date: 2023-12-01
+      category: ["1"]
+
+
+datasets:
+  - name: dataset_agg
+    label: Aggregate Dataset
+    scope: public
+    parameters:
+      - group_by
+      - start_date
+      - end_date
+      - job_category
+      - job_subcategory
+      - min_filter
+      - max_filter
+      - gender
+      - between_dob
+      - percent_toggle
+    traits: {}
+  
+  - name: account_dataset
+    label: Account Dataset
+    scope: protected
+    parameters:
+      - group_by
+      - date_range
+      - job_category
+      - job_subcategory
+      - min_filter
+      - max_filter
+      - gender
+      - between_dob
+      - percent_toggle
+      - is_online
+      - transaction_category
+    traits: {}
+  
+  - name: detailed_account_dataset
+    label: Detailed Account Dataset
+    scope: private
+    parameters:
+      - group_by
+      - min_date_source
+      - max_date_source
+      - job_category
+      - job_subcategory
+      - min_filter
+      - max_filter
+      - gender
+      - between_dob
+      - percent_toggle
+      - is_online
+      - transaction_category
+    traits:
+      show_confidential: true
+
+
+settings: {}

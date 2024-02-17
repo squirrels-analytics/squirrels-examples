@@ -1,0 +1,39 @@
+project_variables:
+  name: weather
+  label: Weather Analytics
+  major_version: 1
+  minor_version: 0
+
+
+packages: []
+
+
+connections:
+  - name: default
+    url: sqlite:///database/weather.db
+
+
+selection_test_sets:
+  - name: group_by_month
+    parameters:
+      group_by: '2'
+      trend_type: '2'
+      time_type: '1'
+      time_periods: 16,17
+
+
+datasets:
+  - name: weather_by_time
+    label: Weather by Time of Year
+    parameters:
+      - group_by
+
+  - name: weather_trend
+    label: Weather Trend
+    parameters:
+      - trend_type
+      - time_type
+      - time_periods
+
+
+settings: {}

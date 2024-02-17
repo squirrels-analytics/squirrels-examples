@@ -7,32 +7,26 @@ project_variables:
 
 packages: []
 
-## Example value for packages:
-#  - git: https://.../myrepo.git
-#    revision: v0.1.0
-#    directory: custom_name ## optional
 
-
-## Uses SQLAlchemy URLs. More details here: https://docs.sqlalchemy.org/en/latest/core/engines.html
 connections:
   - name: default
-    credential: null
-    url: {{ sqlite_conn_str }} ## using Jinja to substitute environment variable from environcfg.yml
+    url: sqlite:///database/cc_fraud.db
 
 
-selection_test_sets:
+selection_test_sets: # TODO: change to proper test sets for this example
   - name: sample_test_set
-    user_attributes:     ## optional unless there are user attributes used by parameters or models
+    user_attributes:
       organization: org1
-    parameters:          ## optional - for unspecified parameters, default value is used
+    parameters:
       group_by: g3
       start_date: 2023-02-01
       end_date: 2023-12-01
       category: ["1"]
+  
   - name: sample_test_set_2
-    user_attributes:     ## optional unless there are user attributes used by parameters or models
+    user_attributes:
       organization: org1
-    parameters:          ## optional - for unspecified parameters, default value is used
+    parameters:
       group_by: g4
       start_date: 2018-02-01
       end_date: 2023-12-01
@@ -40,10 +34,10 @@ selection_test_sets:
 
 
 datasets:
-  - name: dataset_agg  ## model with same name is used unless "model" field is specified for dataset
+  - name: dataset_agg
     label: Aggregate Dataset
-    scope: public          ## optional - one of 'public' (default), 'protected', or 'private'
-    parameters:            ## optional - if not specified, then all parameters are used
+    scope: public
+    parameters:
       - group_by
       - start_date
       - end_date
@@ -54,11 +48,12 @@ datasets:
       - gender
       - between_dob
       - percent_toggle
-    traits: {} ## optional
-  - name: account_dataset  ## model with same name is used unless "model" field is specified for dataset
+    traits: {}
+  
+  - name: account_dataset
     label: Account Dataset
-    scope: protected          ## optional - one of 'public' (default), 'protected', or 'private'
-    parameters:            ## optional - if not specified, then all parameters are used
+    scope: protected
+    parameters:
       - group_by
       - date_range
       - job_category
@@ -70,11 +65,12 @@ datasets:
       - percent_toggle
       - is_online
       - transaction_category
-    traits: {} ## optional
-  - name: detailed_account_dataset  ## model with same name is used unless "model" field is specified for dataset
+    traits: {}
+  
+  - name: detailed_account_dataset
     label: Detailed Account Dataset
-    scope: private          ## optional - one of 'public' (default), 'protected', or 'private'
-    parameters:            ## optional - if not specified, then all parameters are used
+    scope: private
+    parameters:
       - group_by
       - min_date_source
       - max_date_source
@@ -87,18 +83,8 @@ datasets:
       - percent_toggle
       - is_online
       - transaction_category
-    traits: {} ## optional
-    ## Add Protected dataset as well, using different parameters
+    traits:
+      show_confidential: true
 
 
 settings: {}
-
-## Default values for settings:
-#   auth.token.expire.minutes: 30
-#   parameters.cache.size: 1024
-#   parameters.cache.ttl.minutes: 0
-#   results.cache.size: 128
-#   results.cache.ttl.minutes: 0
-#   selection_test_sets.default_name_used: default
-#   connections.default_name_used: default
-#   defaults.federates.materialized: table

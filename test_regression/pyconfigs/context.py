@@ -3,33 +3,25 @@ import squirrels as sr
 
 
 def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
-    """
-    Define context variables AFTER parameter selections are made by adding entries to the dictionary "ctx". 
-    These context variables can then be used in the models.
-
-    Note that the code here is used by all datasets, regardless of the parameters they use. You can use 
-    sqrl.prms and/or sqrl.traits to determine the conditions to execute certain blocks of code.
-    """
 
     if "group_by" in sqrl.prms:
         group_by_param: sr.SingleSelectParameter = sqrl.prms["group_by"]
-        ctx["group_by_cols_list"]: list[str] = group_by_param.get_selected("columns")
-        ctx["group_by_cols_list_select"]: list[str] = []
-        ctx["order_by_cols_list"]: list[str] = group_by_param.get_selected("aliases", default_field="columns")
+        group_by_cols_list = group_by_param.get_selected("columns")
+        order_by_cols_list = group_by_param.get_selected("aliases", default_field="columns")
         
-
-        for column, alias in zip(ctx["group_by_cols_list"], ctx["order_by_cols_list"]):
+        group_by_cols_list_select = []
+        for column, alias in zip(group_by_cols_list, order_by_cols_list):
             if column != alias:
-                ctx["group_by_cols_list_select"].append(column + " as " + alias)
+                group_by_cols_list_select.append(column + " as " + alias)
             else:
-                ctx["group_by_cols_list_select"].append(column)
+                group_by_cols_list_select.append(column)
                 
-        ctx["group_by_cols"] = ",".join(ctx["group_by_cols_list"])
-        ctx["group_by_cols_select"] = ",".join(ctx["group_by_cols_list_select"])
-        ctx["order_by_cols"] = ",".join(ctx["order_by_cols_list"])
+        ctx["group_by_cols"] = ",".join(group_by_cols_list)
+        ctx["group_by_cols_select"] = ",".join(group_by_cols_list_select)
+        ctx["order_by_cols"] = ",".join(order_by_cols_list)
 
-        ctx["join_cols_list"] = ["a." + item + " = b." + item for item in ctx["order_by_cols_list"]]
-        ctx["join_cols"]  = " AND ".join(ctx["join_cols_list"])
+        join_cols_list = ["a." + item + " = b." + item for item in order_by_cols_list]
+        ctx["join_cols"]  = " AND ".join(join_cols_list)
 
     if "percent_toggle" in sqrl.prms:
         percent_toggle_param: sr.SingleSelectParameter = sqrl.prms["percent_toggle"]
@@ -53,7 +45,6 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     
     if "date_range" in sqrl.prms:
         range_filter: sr.DateRangeParameter = sqrl.prms["date_range"]
-        #ctx["has_between_dob"] = between_dob_filter.has_non_empty_selection()
         ctx["end_date"] = range_filter.get_selected_end_date_quoted()
         ctx["start_date"] = range_filter.get_selected_start_date_quoted()
     
@@ -82,18 +73,16 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
 
     if "between_dob" in sqrl.prms:
         between_dob_filter: sr.DateRangeParameter = sqrl.prms["between_dob"]
-        #ctx["has_between_dob"] = between_dob_filter.has_non_empty_selection()
         ctx["dob_end_date"] = between_dob_filter.get_selected_end_date_quoted()
         ctx["dob_start_date"] = between_dob_filter.get_selected_start_date_quoted()
     
     if "is_online" in sqrl.prms:
         is_online_filter: sr.SingleSelectParameter = sqrl.prms["is_online"]
-        ctx["has_is_online"] = True
         ctx["is_online"] = is_online_filter.get_selected_label()
     
     if "transaction_category" in sqrl.prms:
         transaction_category_filter: sr.MultiSelectParameter = sqrl.prms["transaction_category"]
-        ctx["has_transaction_category"] = transaction_category_filter.has_non_empty_selection()
         ctx["transaction_category"] = transaction_category_filter.get_selected_ids_quoted_joined()
 
+    ctx["show_confidential"] = sqrl.traits.get("show_confidential", False)
     

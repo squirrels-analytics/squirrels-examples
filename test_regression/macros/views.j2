@@ -1,0 +1,14 @@
+{%- macro add_fraud_stats_to_cte(ref, ctx, most_fraud_cte) -%}
+
+SELECT a.*, 
+{%- if ctx["percent_toggle"] == "Count" %}
+    b.num_frauds as group_total_num_frauds
+{%- else %}
+    b.percent_frauds as group_avg_percent_frauds
+{%- endif %}
+FROM {{ most_fraud_cte }} a
+    LEFT JOIN {{ ref("fraud_stats") }} b
+    ON {{ ctx["join_cols"] }}
+ORDER BY {{ ctx["order_by_cols"] }}
+
+{%- endmacro -%}

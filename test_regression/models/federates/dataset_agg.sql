@@ -1,3 +1,3 @@
 SELECT *
-FROM {{ ref("database_view1") }}
+FROM {{ ref("fraud_stats") }}
 ORDER BY {{ ctx["order_by_cols"] }}

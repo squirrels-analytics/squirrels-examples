@@ -7,8 +7,8 @@ SELECT {{ctx["group_by_cols_select"] }}
     {%- endif %}
 FROM transactions
 WHERE 1=1
-{%- if ctx["has_job_subcategories"] %}
-    AND job IN ({{ ctx["job_subcategories"] }})
+{%- if ctx["has_job_subcategory"] %}
+    AND job IN ({{ ctx["job_subcategory"] }})
 {%- endif %}
     AND date(trans_date_trans_time) >= date({{ ctx["start_date"] }})
     AND date(trans_date_trans_time) <= date({{ ctx["end_date"] }})

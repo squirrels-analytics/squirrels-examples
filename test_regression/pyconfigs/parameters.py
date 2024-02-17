@@ -41,7 +41,6 @@ def main(sqrl: sr.ParametersArgs) -> None:
 
     ## TODO: Add from-source parameters for single select
 
-
     """ Example of creating MultiSelectParameter from lookup query/table """
     category_ds = sr.MultiSelectDataSource("SELECT DISTINCT Category FROM LU_JobCategories", "Category", "Category")
     sr.MultiSelectParameter.CreateFromSource("job_category", "Job Category Filter", category_ds)
@@ -50,17 +49,27 @@ def main(sqrl: sr.ParametersArgs) -> None:
     subcategory_ds = sr.MultiSelectDataSource("Lu_JobCategories", "JobTitle", "JobTitle", parent_id_col="Category")
     sr.MultiSelectParameter.CreateFromSource("job_subcategory", "Job Filter", subcategory_ds, parent_name="job_category")
 
-    # Note to Tim, can you make sure that I'm using the createSimple correctly here?
-    is_online_options = [
-        sr.SelectParameterOption("Person", "In-Person"),
-        sr.SelectParameterOption("Online", "Online"),
-        sr.SelectParameterOption("Uncertain", "Uncertain")
-    ]
-    sr.SingleSelectParameter.Create("is_online", "Online/In-Person", is_online_options)
+    is_online_options_ds =  sr.SingleSelectDataSource("select distinct isOnline from LU_Online", "isOnline", "isOnline")
+    sr.SingleSelectParameter.CreateFromSource("is_online", "Online/In-Person", is_online_options_ds)
 
-    """Multiselect Simple Parent and Source Multiselect child"""
-    trans_category_ds = sr.MultiSelectDataSource("LU_Online", "category", "category", parent_id_col= "isOnline")
-    sr.MultiSelectParameter.CreateFromSource("transaction_category", "Transaction Category", trans_category_ds, parent_name="is_online")
+    """From source parent and coded option child parameter"""
+    trans_category_options = [
+        sr.SelectParameterOption("personal_care", "Personal Care", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("health_fitness", "Health and Fitness", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("misc_pos", "Misc. (In-Person)", parent_option_ids = "In-Person"),
+        sr.SelectParameterOption("travel", "Travel", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("kids_pets", "Kids and Pets", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("shopping_pos", "In-Person Shopping", parent_option_ids = "In-Person"),
+        sr.SelectParameterOption("food_dining", "Food and Dining", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("home", "Home", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("entertainment", "Entertainment", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("shopping_net", "Online Shopping", parent_option_ids = "Online"),
+        sr.SelectParameterOption("misc_net", "Misc. (Online)", parent_option_ids = "Online"),
+        sr.SelectParameterOption("grocery_pos", "In-Person Groceries", parent_option_ids = "In-Person"),
+        sr.SelectParameterOption("gas_transport", "Gas and Transport", parent_option_ids = "Uncertain"),
+        sr.SelectParameterOption("grocery_net", "Online Groceries", parent_option_ids = "Online")
+    ]
+    sr.MultiSelectParameter.Create("transaction_category", "Transaction Category", trans_category_options, parent_name="is_online")
 
     """Date and DateRange Parameters"""
 
@@ -87,12 +96,11 @@ def main(sqrl: sr.ParametersArgs) -> None:
     max_date_source = sr.DateDataSource("select min(date(trans_date_trans_time)) as oldest_date, max(date(trans_date_trans_time)) as nearest_date from transactions", "nearest_date")
     sr.DateParameter.CreateFromSource("max_date_source", "Maximum Transaction Date", max_date_source)
 
-
     """Number and number range parameters"""
-
     sr.NumberParameter.CreateSimple("min_filter", "Amounts Greater Than", min_value=0, max_value=50000, increment=100)
     
-    query = "SELECT 0 as min_value, round(max(amt),-1) as max_value, 10 as increment FROM transactions WHERE is_fraud = '1'"
+    # Round function for some reason doesn't want to work with negative arguments, working around it by dividing 10 and the multiplying after rounding
+    query = "SELECT 0 as min_value, round(max(amt)/10, 0)*10 as max_value, 10 as increment FROM transactions WHERE is_fraud = '1'"
     max_amount_ds = sr.NumberDataSource(query, "min_value", "max_value", increment_col="increment", default_value_col="max_value")
     sr.NumberParameter.CreateFromSource("max_filter", "Amounts Less Than", max_amount_ds)
 

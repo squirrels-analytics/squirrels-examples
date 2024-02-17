@@ -45,11 +45,17 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
 
     if "min_date_source" in sqrl.prms:
         min_date_param: sr.DateParameter = sqrl.prms["min_date_source"]
-        ctx["min_date_source"] = min_date_param.get_selected_date_quoted()
+        ctx["start_date"] = min_date_param.get_selected_date_quoted()
     
     if "max_date_source" in sqrl.prms:
         max_date_param: sr.DateParameter = sqrl.prms["max_date_source"]
-        ctx["max_date_source"] = max_date_param.get_selected_date_quoted()
+        ctx["end_date"] = max_date_param.get_selected_date_quoted()
+    
+    if "date_range" in sqrl.prms:
+        range_filter: sr.DateRangeParameter = sqrl.prms["date_range"]
+        #ctx["has_between_dob"] = between_dob_filter.has_non_empty_selection()
+        ctx["end_date"] = range_filter.get_selected_end_date_quoted()
+        ctx["start_date"] = range_filter.get_selected_start_date_quoted()
     
     if "job_category" in sqrl.prms:
         category_param: sr.MultiSelectParameter = sqrl.prms["job_category"]
@@ -80,12 +86,6 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
         ctx["dob_end_date"] = between_dob_filter.get_selected_end_date_quoted()
         ctx["dob_start_date"] = between_dob_filter.get_selected_start_date_quoted()
     
-    if "date_range" in sqrl.prms:
-        range_filter: sr.DateRangeParameter = sqrl.prms["date_range"]
-        #ctx["has_between_dob"] = between_dob_filter.has_non_empty_selection()
-        ctx["range_end_date"] = range_filter.get_selected_end_date_quoted()
-        ctx["range_start_date"] = range_filter.get_selected_start_date_quoted()
-    
     if "is_online" in sqrl.prms:
         is_online_filter: sr.SingleSelectParameter = sqrl.prms["is_online"]
         ctx["has_is_online"] = True
@@ -94,6 +94,6 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     if "transaction_category" in sqrl.prms:
         transaction_category_filter: sr.MultiSelectParameter = sqrl.prms["transaction_category"]
         ctx["has_transaction_category"] = transaction_category_filter.has_non_empty_selection()
-        ctx["transaction_category"] = transaction_category_filter.get_selected_labels_quoted_joined()
+        ctx["transaction_category"] = transaction_category_filter.get_selected_ids_quoted_joined()
 
     

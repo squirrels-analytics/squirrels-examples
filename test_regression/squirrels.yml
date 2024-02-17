@@ -54,11 +54,10 @@ datasets:
       - gender
       - between_dob
       - percent_toggle
-      - percent_toggle
     traits: {} ## optional
   - name: account_dataset  ## model with same name is used unless "model" field is specified for dataset
     label: Account Dataset
-    scope: public          ## optional - one of 'public' (default), 'protected', or 'private'
+    scope: protected          ## optional - one of 'public' (default), 'protected', or 'private'
     parameters:            ## optional - if not specified, then all parameters are used
       - group_by
       - date_range
@@ -69,12 +68,12 @@ datasets:
       - gender
       - between_dob
       - percent_toggle
-      - transaction_category
       - is_online
+      - transaction_category
     traits: {} ## optional
   - name: detailed_account_dataset  ## model with same name is used unless "model" field is specified for dataset
     label: Detailed Account Dataset
-    scope: public          ## optional - one of 'public' (default), 'protected', or 'private'
+    scope: private          ## optional - one of 'public' (default), 'protected', or 'private'
     parameters:            ## optional - if not specified, then all parameters are used
       - group_by
       - min_date_source
@@ -86,8 +85,8 @@ datasets:
       - gender
       - between_dob
       - percent_toggle
-      - transaction_category
       - is_online
+      - transaction_category
     traits: {} ## optional
     ## Add Protected dataset as well, using different parameters
 

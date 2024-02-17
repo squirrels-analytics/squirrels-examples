@@ -4,11 +4,11 @@ WITH Grouped_Fraud_Count AS (
         SUM(is_fraud) as num_frauds
     FROM transactions
     WHERE 1=1
-        {%- if ctx["has_job_subcategories"] %}
-            AND job IN ({{ ctx["job_subcategories"] }})
+        {%- if ctx["has_job_subcategory"] %}
+            AND job IN ({{ ctx["job_subcategory"] }})
         {%- endif %}
-        AND date(trans_date_trans_time) >= date({{ ctx["min_date_source"] }})
-        AND date(trans_date_trans_time) <= date({{ ctx["max_date_source"] }})
+        AND date(trans_date_trans_time) >= date({{ ctx["start_date"] }})
+        AND date(trans_date_trans_time) <= date({{ ctx["end_date"] }})
         AND cast(amt as numeric) >= {{ctx["min_amount"]}}
         AND cast(amt as numeric) <= {{ctx["max_amount"]}}
         {%- if ctx["has_gender"] %}

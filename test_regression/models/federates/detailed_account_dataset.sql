@@ -3,7 +3,7 @@
 WITH
 most_fraudulent AS (
     SELECT
-        {{ ctx["order_by_cols"] }},
+        {{ ctx.order_by_cols }},
         ui.first_last_name as max_fraud_name,
         ui.cc_num,
         ui.job,

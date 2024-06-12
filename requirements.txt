@@ -1,1 +1,1 @@
-squirrels==0.2.1
+squirrels @ git+https://github.com/squirrels-nest/squirrels.git@e55698ef4cd7c8bc530ab56fe65884230273bc79

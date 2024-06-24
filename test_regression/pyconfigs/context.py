@@ -93,6 +93,11 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     if sqrl.prms_contain("transaction_category"):
         transaction_category_filter: sr.MultiSelectParameter = sqrl.prms["transaction_category"]
         ctx["transaction_category"] = transaction_category_filter.get_selected_ids_quoted_joined()
+    
+    if sqrl.prms_contain("name_filter"):
+        name_param: sr.TextParameter = sqrl.prms["name_filter"]
+        name_pattern = name_param.get_entered_text().apply_percent_wrap()
+        sqrl.set_placeholder("name_pattern", name_pattern)
 
     ctx["show_confidential"] = sqrl.traits.get("show_confidential", False)
     

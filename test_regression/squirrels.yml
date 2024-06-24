@@ -60,6 +60,7 @@ datasets:
       - percent_toggle
       - is_online
       - transaction_category
+      - name_filter
     traits:
       show_confidential: true
 

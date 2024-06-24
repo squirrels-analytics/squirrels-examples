@@ -19,4 +19,5 @@ WHERE true
     AND date(dob) >= date({{ ctx.dob_start_date }})
     AND date(dob) <= date({{ ctx.dob_end_date }})
     AND category in ({{ ctx.transaction_category }})
+{% if is_placeholder("name_pattern") -%} AND {{ tf.full_name() }} LIKE :name_pattern {%- endif %}
 GROUP BY {{ tf.full_name() }}, {{ c.cc_num_with_comma(ctx) }} {{ ctx.group_by_cols }}

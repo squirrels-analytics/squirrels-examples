@@ -87,3 +87,10 @@ def main(sqrl: sr.ParametersArgs) -> None:
 
     between_amt_source = sr.NumberRangeDataSource("select 0 as min_amt, 1500 as max_amt, 10 as incr", "min_amt", "max_amt", increment_col="incr")
     sr.NumberRangeParameter.CreateFromSource("between_filter2", "Amounts Between", between_amt_source)
+
+    ## Example of TextParameter
+    text_options = [sr.TextParameterOption(default_text= "John Smith")]
+    sr.TextParameter.Create(
+        "name_filter", "Name Search", text_options,
+        description="Filter by User Name"
+    )

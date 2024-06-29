@@ -11,21 +11,21 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     sqrl.prms and sqrl.args to determine the conditions to execute certain blocks of code.
     """
 
-    if sqrl.prms_contain("group_by"):
+    if sqrl.param_exists("group_by"):
         group_by_param: sr.SingleSelectParameter = sqrl.prms["group_by"]
         ctx["dim_col"] = group_by_param.get_selected("dim_col")
         ctx["order_col"] = group_by_param.get_selected("order_by_col", default_field="dim_col")
     
-    if sqrl.prms_contain("trend_type"):
+    if sqrl.param_exists("trend_type"):
         trend_type_param: sr.SingleSelectParameter = sqrl.prms["trend_type"]
         ctx["dim_col"] = trend_type_param.get_selected("dim_col")
         ctx["alias"] = trend_type_param.get_selected("alias")
     
-    if sqrl.prms_contain("time_type"):
+    if sqrl.param_exists("time_type"):
         time_type_param: sr.SingleSelectParameter = sqrl.prms["time_type"]
         ctx["filter_by_col"] = time_type_param.get_selected("column")
     
-    if sqrl.prms_contain("time_periods"):
+    if sqrl.param_exists("time_periods"):
         time_periods_param: sr.MultiSelectParameter = sqrl.prms["time_periods"]
         ctx["has_time_periods"] = time_periods_param.has_non_empty_selection()
         ctx["selected_time_periods"] = time_periods_param.get_selected_labels_quoted_joined()

@@ -1,1 +1,1 @@
-squirrels @ git+https://github.com/squirrels-nest/squirrels.git@9f7ff6f7635d8f012632fba2e9bede0b2627bbd9
+squirrels[duckdb]==0.3.0

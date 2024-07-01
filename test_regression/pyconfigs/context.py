@@ -94,7 +94,7 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
         transaction_category_filter: sr.MultiSelectParameter = sqrl.prms["transaction_category"]
         ctx["transaction_category"] = transaction_category_filter.get_selected_ids_quoted_joined()
     
-    if sqrl.prms_contain("name_filter"):
+    if sqrl.param_exists("name_filter"):
         name_param: sr.TextParameter = sqrl.prms["name_filter"]
         name_pattern = name_param.get_entered_text().apply_percent_wrap()
         sqrl.set_placeholder("name_pattern", name_pattern)

@@ -1,4 +1,4 @@
-SELECT {{ ctx['dim_col'] }}
+SELECT {{ ctx.dim_col }}
     , temperature_high_C
     , temperature_low_C
     , precipitation_inches

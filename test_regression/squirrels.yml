@@ -2,7 +2,6 @@ project_variables:
   name: regression_test
   label: Regression Test
   major_version: 1
-  minor_version: 0
 
 
 packages: []
@@ -10,27 +9,7 @@ packages: []
 
 connections:
   - name: default
-    url: sqlite:///database/cc_fraud.db
-
-
-selection_test_sets: # TODO: change to proper test sets for this example
-  - name: sample_test_set
-    user_attributes:
-      organization: org1
-    parameters:
-      group_by: g3
-      start_date: 2023-02-01
-      end_date: 2023-12-01
-      category: ["1"]
-  
-  - name: sample_test_set_2
-    user_attributes:
-      organization: org1
-    parameters:
-      group_by: g4
-      start_date: 2018-02-01
-      end_date: 2023-12-01
-      category: ["1"]
+    url: {{ env_vars.sqlite_conn_str }} # sqlite:///database/cc_fraud.db
 
 
 datasets:
@@ -58,8 +37,7 @@ datasets:
       - date_range
       - job_category
       - job_subcategory
-      - min_filter
-      - max_filter
+      - between_filter
       - gender
       - between_dob
       - percent_toggle
@@ -76,15 +54,31 @@ datasets:
       - max_date_source
       - job_category
       - job_subcategory
-      - min_filter
-      - max_filter
+      - between_filter2
       - gender
       - between_dob
       - percent_toggle
       - is_online
       - transaction_category
+      - name_filter
     traits:
       show_confidential: true
+
+
+selection_test_sets:
+  - name: default
+    user_attributes:
+      is_internal: True
+    parameters:
+      group_by: g4
+  
+  - name: no_auth_test1
+    datasets: [dataset_agg]
+  
+  - name: external_user_test1
+    datasets: [dataset_agg, account_dataset]
+    user_attributes:
+      is_internal: False  
 
 
 settings: {}

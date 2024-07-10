@@ -1,1 +1,1 @@
-squirrels==0.2.1
+squirrels[duckdb]==0.3.0

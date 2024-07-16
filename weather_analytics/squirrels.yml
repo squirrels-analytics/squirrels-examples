@@ -9,21 +9,30 @@ packages: []
 
 connections:
   - name: default
-    url: sqlite:///database/weather.db
+    url: sqlite:///./assets/weather.db
+  
+  ## Run this to attach the database to your Motherduck account: ATTACH 'md:_share/squirrels_analytics_public_db/597bd9c2-72c8-49b9-8ed6-f3d4441fda24'
+  - name: duckdb
+    credential: motherduck_token
+    url: duckdb:///md:squirrels_analytics_public_db?motherduck_token={password}
 
 
 datasets:
-  - name: weather_by_time
+  - name: weather_by_period
     label: Weather by Time of Year
     parameters:
-      - group_by
+      - group_by_dim
 
   - name: weather_trend
     label: Weather Trend
     parameters:
       - trend_type
-      - time_type
-      - time_periods
+      - date_filter
+  
+  - name: ice_cream_sales_trend
+    label: Ice Cream Profits Over Time
+    parameters:
+      - date_filter
 
 
 selection_test_sets:
@@ -31,15 +40,20 @@ selection_test_sets:
     datasets:
       - weather_by_time
     parameters:
-      group_by: '2'
+      group_by_dim: '2'
   
   - name: trend_over_months
     datasets:
       - weather_trend
     parameters:
       trend_type: '2'
-      time_type: '1'
-      time_periods: ['16','17']
+      date_filter: ['2014-01-01','2015-06-30']
+  
+  - name: trend_over_quarters
+    datasets:
+      - weather_trend
+    parameters:
+      trend_type: '1'
 
 
 settings: {}

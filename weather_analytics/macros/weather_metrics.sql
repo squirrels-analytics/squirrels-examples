@@ -1,6 +1,10 @@
+{%- macro round(col_name) -%}
+    ROUND({{ col_name }}, 2)
+{%- endmacro -%}
+
 {%- macro get_metrics() -%}
-    , avg(temp_max) as temperature_high_C
-    , avg(temp_min) as temperature_low_C
-    , avg(precipitation) as precipitation_inches
-    , avg(wind) as wind_mph
+    {{ round("SUM(precipitation)") }} AS precipitation,
+    {{ round("MAX(temperature_max)") }} AS temperature_max,
+    {{ round("MIN(temperature_min)") }} AS temperature_min,
+    {{ round("AVG(wind)") }} AS wind
 {%- endmacro -%}

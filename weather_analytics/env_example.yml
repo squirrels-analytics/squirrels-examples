@@ -1,0 +1,6 @@
+## Simply copy this file and rename to 'env.yml'
+
+credentials:
+  motherduck_token:
+    username: ""
+    password: "" ## enter your motherduck token here

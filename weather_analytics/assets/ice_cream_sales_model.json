@@ -1,0 +1,1 @@
+{"model_type": "LinearRegression", "function": "a * [temp_c] + b", "parameters": {"a": 2.145616072151108, "b": 4.446119724655837}}

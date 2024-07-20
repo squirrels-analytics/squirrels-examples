@@ -1,0 +1,85 @@
+project_variables:
+  name: sample
+  label: Sample Project
+  major_version: 1
+
+
+packages: []
+
+## Example value for packages:
+#  - git: https://.../myrepo.git
+#    revision: v0.1.0
+#    directory: custom_name ## optional
+
+
+## Uses SQLAlchemy URLs. More details here: https://docs.sqlalchemy.org/en/latest/core/engines.html
+connections:
+  - name: default
+    credential: null
+    url: sqlite:///./assets/expenses.db
+
+
+parameters:
+  - type: SingleSelectParameter
+    factory: Create                                       ## one of 'Create', 'CreateSimple', or 'CreateFromSource'
+    arguments:                                            ## arguments to specify depend on values for 'type' and 'factory'
+      name: group_by
+      label: Group By
+      description: Dimension to aggregate by              ## optional, default is empty string
+      all_options:
+        - id: g0
+          label: Transaction
+          columns: ["masked_id", "date", "description"]   ## custom field
+          aliases: ["id", "date", "description"]          ## custom field
+        - id: g1
+          label: Date
+          columns: [date]
+        - id: g2
+          label: Category
+          columns: [category]
+        - id: g3
+          label: Subcategory
+          columns: [category, subcategory]
+  
+  - type: TextParameter
+    factory: Create
+    arguments:
+      name: description_filter
+      label: Description Contains
+      description: Filter by transactions with this description
+      parent_name: group_by
+      all_options:
+        - parent_option_ids: g0
+
+
+datasets:
+  - name: dataset_example
+    label: Dataset Example
+    scope: public
+    parameters:
+      - group_by
+      - description_filter
+
+
+selection_test_sets:
+  - name: no_auth_test1
+    datasets:
+      - dataset_example
+    parameters:
+      start_date: 2023-07-01
+
+
+settings: {}
+
+## Default values for settings:
+#   auth.token.expire_minutes: 30
+#   parameters.cache.size: 1024
+#   parameters.cache.ttl_minutes: 60
+#   results.cache.size: 128
+#   results.cache.ttl_minutes: 60
+#   selection_test_sets.default_name_used: default
+#   connections.default_name_used: default
+#   defaults.federates.materialized: table
+#   in_memory_database: sqlite
+#   seeds.infer_schema: True
+#   seeds.na_values: [NA]

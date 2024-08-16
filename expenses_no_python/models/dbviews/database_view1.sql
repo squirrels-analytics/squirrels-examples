@@ -9,7 +9,7 @@
 {%- set select_dim_cols = zip_with_as_and_join(columns, aliases) -%}
 {%- set group_by_cols = ", ".join(columns) -%}
 
-{%- if is_param_enabled("description_filter") -%}
+{%- if param_exists("description_filter") -%}
     {%- set desc_pattern = prms["description_filter"].get_entered_text().apply_percent_wrap() -%}
     {%- set _ = set_placeholder("desc_pattern", desc_pattern) -%}
 {%- endif -%}
@@ -23,7 +23,8 @@ transactions_with_masked_id AS (
 SELECT {{ select_dim_cols }}
     sum(-amount) as total_amount
 FROM transactions_with_masked_id
+WHERE category <> 'Income'
 {% if is_placeholder("desc_pattern") -%} 
-WHERE description LIKE :desc_pattern 
+    AND description LIKE :desc_pattern 
 {% endif -%}
 GROUP BY {{ group_by_cols }}

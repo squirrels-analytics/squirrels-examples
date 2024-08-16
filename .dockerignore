@@ -8,3 +8,7 @@ playground*
 **/env.yml
 **/target/
 **/sqrl_packages/
+
+# additional files for docker to ignore
+**/Dockerfile
+**/compose.yml

@@ -1,2 +1,2 @@
-squirrels[duckdb]==0.3.1
+squirrels[duckdb]==0.3.2
 scikit-learn

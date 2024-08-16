@@ -21,7 +21,7 @@ connections:
 
 parameters:
   - type: SingleSelectParameter
-    factory: Create                                       ## one of 'Create', 'CreateSimple', or 'CreateFromSource'
+    factory: CreateWithOptions
     arguments:                                            ## arguments to specify depend on values for 'type' and 'factory'
       name: group_by
       label: Group By
@@ -42,11 +42,11 @@ parameters:
           columns: [category, subcategory]
   
   - type: TextParameter
-    factory: Create
+    factory: CreateWithOptions
     arguments:
       name: description_filter
       label: Description Contains
-      description: Filter by transactions with this description
+      description: Substring of description to filter transactions by
       parent_name: group_by
       all_options:
         - parent_option_ids: g0

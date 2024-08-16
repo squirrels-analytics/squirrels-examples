@@ -1,6 +1,11 @@
 {%- import 'macros/transaction_features.j2' as tf -%}
+{%- import 'macros/views.j2' as v -%}
 
-SELECT {{ ctx.group_by_cols_select }},
+WITH
+transactions_with_month AS (
+    {{ v.transactions_with_month() | indent(4) }}
+)
+SELECT {{ ctx.group_by_cols }},
 {%- if ctx.percent_toggle == "Count" %}
     SUM(is_fraud) as num_frauds
 {%- else %}

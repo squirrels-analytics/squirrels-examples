@@ -1,10 +1,15 @@
 {%- import 'macros/common.j2' as c -%}
 {%- import 'macros/transaction_features.j2' as tf -%}
+{%- import 'macros/views.j2' as v -%}
 
+WITH
+transactions_with_month AS (
+    {{ v.transactions_with_month() | indent(4) }}
+)
 SELECT {{ tf.full_name() }} as first_last_name, {{ c.cc_num_with_comma(ctx) }}
-    {{ ctx.group_by_cols_select }},
+    {{ ctx.group_by_cols }},
     SUM(is_fraud) as num_frauds
-FROM transactions
+FROM transactions_with_month
 WHERE true
 {%- if ctx.has_job_subcategory %}
     AND job IN ({{ ctx.job_subcategory }})

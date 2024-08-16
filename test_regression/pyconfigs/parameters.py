@@ -10,9 +10,9 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.SelectParameterOption("g1", "City", columns=["state", "city"]),
         sr.SelectParameterOption("g2", "Category", columns=["category"]),
         sr.SelectParameterOption("g3", "State", columns=["state"]),
-        sr.SelectParameterOption("g4", "Month", columns=["STRFTIME('%Y-%m', date(trans_date_trans_time))"], aliases = ["Month"])
+        sr.SelectParameterOption("g4", "Month", columns=["month"])
     ]
-    sr.SingleSelectParameter.Create("group_by", "Group By", group_by_options)
+    sr.SingleSelectParameter.CreateWithOptions("group_by", "Group By", group_by_options)
 
     gender_options = [
         sr.SelectParameterOption("m", "M"),
@@ -54,14 +54,14 @@ def main(sqrl: sr.ParametersArgs) -> None:
         sr.SelectParameterOption("gas_transport", "Gas and Transport", parent_option_ids = "Uncertain"),
         sr.SelectParameterOption("grocery_net", "Online Groceries", parent_option_ids = "Online")
     ]
-    sr.MultiSelectParameter.Create("transaction_category", "Transaction Category", trans_category_options, parent_name=parent_name)
+    sr.MultiSelectParameter.CreateWithOptions("transaction_category", "Transaction Category", trans_category_options, parent_name=parent_name)
 
     ## Examples of Date and DateRange Parameters
     
     sr.DateParameter.CreateSimple("start_date", "Start Date", "2020-06-01")
 
-    end_date_option = [sr.DateParameterOption("2020-12-31")]
-    sr.DateParameter.Create("end_date", "End Date", end_date_option)
+    end_date_options = [sr.DateParameterOption("2020-12-31")]
+    sr.DateParameter.CreateWithOptions("end_date", "End Date", end_date_options)
 
     sr.DateRangeParameter.CreateSimple("date_range", "Date Range", "2020-06-01", "2020-12-31")
 

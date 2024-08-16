@@ -7,20 +7,9 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     if sqrl.param_exists("group_by"):
         group_by_param: sr.SingleSelectParameter = sqrl.prms["group_by"]
         group_by_cols_list = group_by_param.get_selected("columns")
-        order_by_cols_list = group_by_param.get_selected("aliases", default_field="columns")
-        
-        group_by_cols_list_select = []
-        for column, alias in zip(group_by_cols_list, order_by_cols_list):
-            if column != alias:
-                group_by_cols_list_select.append(column + " as " + alias)
-            else:
-                group_by_cols_list_select.append(column)
-                
         ctx["group_by_cols"] = ",".join(group_by_cols_list)
-        ctx["group_by_cols_select"] = ",".join(group_by_cols_list_select)
-        ctx["order_by_cols"] = ",".join(order_by_cols_list)
 
-        join_cols_list = ["a." + item + " = b." + item for item in order_by_cols_list]
+        join_cols_list = [f"a.{item} = b.{item}" for item in group_by_cols_list]
         ctx["join_cols"]  = " AND ".join(join_cols_list)
 
     if sqrl.param_exists("gender"):

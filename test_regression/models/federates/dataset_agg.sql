@@ -1,3 +1,3 @@
 SELECT *
 FROM {{ ref("fraud_stats") }}
-ORDER BY {{ ctx.order_by_cols }}
+ORDER BY {{ ctx.group_by_cols }}

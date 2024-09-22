@@ -1,8 +1,0 @@
-project_variables:
-  name: expenses_transactions
-  label: Transactions History - Slim Example
-  major_version: 1
-
-
-datasets:
-  - name: transactions

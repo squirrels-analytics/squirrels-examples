@@ -11,7 +11,7 @@ FROM transactions
 {%- macro add_fraud_stats_to_cte(ref, ctx, most_fraud_cte) -%}
 
 SELECT a.*, 
-{%- if ctx.percent_toggle == "Count" %}
+{%- if ctx.percent_toggle == "count" %}
     b.num_frauds as group_total_num_frauds
 {%- else %}
     b.percent_frauds as group_avg_percent_frauds

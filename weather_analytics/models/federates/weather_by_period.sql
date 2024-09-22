@@ -1,5 +1,3 @@
-{%- from 'macros/weather_metrics.sql' import get_metrics -%}
-
 SELECT 
     '{{ ctx.dim_col }}' AS dimension_type, 
     {{ ctx.dim_col }} AS dimension_value,

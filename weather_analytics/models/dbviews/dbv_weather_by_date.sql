@@ -1,5 +1,3 @@
-{%- from 'macros/weather_metrics.sql' import get_metrics -%}
-
 WITH
 aliased AS (
 

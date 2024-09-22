@@ -15,8 +15,8 @@ def main(sqrl: sr.ParametersArgs) -> None:
     sr.SingleSelectParameter.CreateWithOptions("group_by", "Group By", group_by_options)
 
     gender_options = [
-        sr.SelectParameterOption("m", "M"),
-        sr.SelectParameterOption("f", "F")
+        sr.SelectParameterOption("m", "Male", value="M"),
+        sr.SelectParameterOption("f", "Female", value="F")
     ]
     sr.MultiSelectParameter.CreateSimple("gender", "Gender", gender_options)
 

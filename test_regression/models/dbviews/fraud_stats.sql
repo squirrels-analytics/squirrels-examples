@@ -1,12 +1,9 @@
-{%- import 'macros/transaction_features.j2' as tf -%}
-{%- import 'macros/views.j2' as v -%}
-
 WITH
 transactions_with_month AS (
-    {{ v.transactions_with_month() | indent(4) }}
+    {{ transactions_with_month() | indent(4) }}
 )
 SELECT {{ ctx.group_by_cols }},
-{%- if ctx.percent_toggle == "Count" %}
+{%- if ctx.percent_toggle == "count" %}
     SUM(is_fraud) as num_frauds
 {%- else %}
     AVG(is_fraud)*100 as percent_frauds
@@ -25,5 +22,5 @@ WHERE true
 {%- endif %}
     AND date(dob) >= date({{ ctx.dob_start_date }})
     AND date(dob) <= date({{ ctx.dob_end_date }})
-{% if is_placeholder("name_pattern") -%} AND {{ tf.full_name() }} LIKE :name_pattern {%- endif %}
+{% if is_placeholder("name_pattern") -%} AND {{ full_name() }} LIKE :name_pattern {%- endif %}
 GROUP BY {{ ctx.group_by_cols }}

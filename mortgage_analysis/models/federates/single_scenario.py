@@ -10,7 +10,7 @@ def dependencies(sqrl: ModelDepsArgs) -> Iterable:
 
 
 def main(sqrl: ModelArgs) -> pd.DataFrame:
-    df_snp = sqrl.ref("seed_snp500")
+    (df_snp,) = [sqrl.ref(name) for name in dependencies(sqrl)]
 
     start_date = sqrl.get_placeholder_value("start_date")
     total_num_months = sqrl.ctx["total_num_months"]

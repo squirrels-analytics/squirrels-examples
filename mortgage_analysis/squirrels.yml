@@ -34,5 +34,16 @@ datasets:
       - num_trials
 
 
+dashboards:
+  - name: simulation_percentiles
+    label: Simulation Percentiles
+    parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - num_trials
+
+
 settings:
   results.cache.ttl_minutes: 0

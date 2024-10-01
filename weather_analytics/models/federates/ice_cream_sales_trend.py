@@ -13,7 +13,11 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
     Create federated models by joining/processing dependent database views and/or other federated models to
     form and return the result as a new pandas DataFrame.
     """
-    df_weather, df_ice_cream = [sqrl.ref(name) for name in dependencies(sqrl)]
+    DBV_WEATHER_BY_DATE, DBV_ICE_CREAM_SALES = dependencies(sqrl)
+    df_weather = sqrl.ref(DBV_WEATHER_BY_DATE)
+    df_ice_cream = sqrl.ref(DBV_ICE_CREAM_SALES)
+
+    ## Join dataframes
     df_joined = df_weather.merge(df_ice_cream, on="date")
 
     ## Get ML model

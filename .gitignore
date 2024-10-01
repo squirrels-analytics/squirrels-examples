@@ -6,5 +6,6 @@ playground*
 
 # squirrels files to ignore
 **/env.yml
+**/logs/
 **/target/
 **/sqrl_packages/

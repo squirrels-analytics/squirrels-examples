@@ -25,8 +25,8 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
         "month_number": 0,
         "current_month": curr_month.strftime("%Y-%m-%d"),
         "stock_return": None,
-        "deposit_if_refinance_house": loan_amount,
-        "value_if_refinance_house": loan_amount,
+        "deposit_if_renew_mortgage": loan_amount,
+        "value_if_renew_mortgage": loan_amount,
         "deposit_if_pay_down_house": 0,
         "value_if_pay_down_house": 0
     }
@@ -39,8 +39,8 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
             "month_number": idx + 1,
             "current_month": curr_month.strftime("%Y-%m-%d"),
             "stock_return": stock_return,
-            "deposit_if_refinance_house": 0,
-            "value_if_refinance_house": prev_row["value_if_refinance_house"] * (1 + stock_return),
+            "deposit_if_renew_mortgage": 0,
+            "value_if_renew_mortgage": prev_row["value_if_renew_mortgage"] * (1 + stock_return),
             "deposit_if_pay_down_house": monthly_payment,
             "value_if_pay_down_house": prev_row["value_if_pay_down_house"] * (1 + stock_return) + monthly_payment
         }
@@ -49,7 +49,7 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
 
     df = pd.DataFrame(rows)
 
-    dollars_columns = ["deposit_if_refinance_house", "value_if_refinance_house", "deposit_if_pay_down_house", "value_if_pay_down_house"]
+    dollars_columns = ["deposit_if_renew_mortgage", "value_if_renew_mortgage", "deposit_if_pay_down_house", "value_if_pay_down_house"]
     for col in dollars_columns:
         df[col] = df[col].round(2)
 

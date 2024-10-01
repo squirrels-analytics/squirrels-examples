@@ -1,6 +1,6 @@
 project_variables:
   name: mortgage_analysis
-  label: Refinance vs Pay Off House
+  label: Renew Mortgage vs Pay Off House
   major_version: 1
 
 

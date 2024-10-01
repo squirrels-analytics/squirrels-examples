@@ -31,9 +31,9 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
     fig.tight_layout(pad=4, h_pad=6)
 
     # Create a box plot comparing simulations side by side
-    df[["value_if_refinance_house", "value_if_pay_down_house"]].boxplot(ax=ax0)
+    df[["value_if_renew_mortgage", "value_if_pay_down_house"]].boxplot(ax=ax0)
 
-    add_quartile_labels(ax0, df[["value_if_refinance_house", "value_if_pay_down_house"]])
+    add_quartile_labels(ax0, df[["value_if_renew_mortgage", "value_if_pay_down_house"]])
 
     ax0.set_yscale('log')
     ax0.set_ylabel("Value of Stocks (in $1000's, log scale)")
@@ -43,7 +43,7 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
 
     add_quartile_labels(ax1, df[["perc_diff"]])
 
-    ax1.set_title('Refinance vs. Pay Down House - Percent Difference in Stock Value')
+    ax1.set_title('Renew vs Pay Down Mortgage - Percent Diff in Stock Value')
     ax1.set_ylabel('Percentage Difference')
 
     # Mark the percentile where the percentage difference is zero

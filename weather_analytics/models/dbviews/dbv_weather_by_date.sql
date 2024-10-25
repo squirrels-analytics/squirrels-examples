@@ -6,6 +6,7 @@ aliased AS (
         temp_min AS temperature_min
 
     FROM weather
+
 ),
 aggregated AS (
 
@@ -20,6 +21,7 @@ aggregated AS (
     FROM aliased
     
     GROUP BY date
+
 ),
 weather_by_date_with_quarter AS (
 
@@ -27,6 +29,7 @@ weather_by_date_with_quarter AS (
         (month_order - 1) / 3 + 1 AS quarter_order
     
     FROM aggregated
+    
 )
 SELECT *,
     'Q' || quarter_order AS quarter

@@ -15,11 +15,12 @@ def main(ctx: dict[str, Any], sqrl: sr.ContextArgs) -> None:
     if sqrl.param_exists("gender"):
         category_param: sr.MultiSelectParameter = sqrl.prms["gender"]
         ctx["has_gender"] = category_param.has_non_empty_selection()
-        ctx["gender"] = category_param.get_selected_labels_quoted_joined()
+        gender_list = category_param.get_selected_list("value")
+        ctx["gender"] = ",".join(f"'{x}'" for x in gender_list)
 
     if sqrl.param_exists("percent_toggle"):
         percent_toggle_param: sr.SingleSelectParameter = sqrl.prms["percent_toggle"]
-        ctx["percent_toggle"] = percent_toggle_param.get_selected_label()
+        ctx["percent_toggle"] = percent_toggle_param.get_selected_id()
 
     if sqrl.param_exists("start_date"):
         start_date_param: sr.DateParameter = sqrl.prms["start_date"]

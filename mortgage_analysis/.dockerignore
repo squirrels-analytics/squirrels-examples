@@ -1,14 +1,13 @@
 **/__pycache__/
-playground*
 
 # common virtual environment names
 .venv/
 
 # squirrels files to ignore
-**/env.yml
-**/target/
-**/sqrl_packages/
+env.yml
+target/
+sqrl_packages/
 
 # additional files for docker to ignore
-**/Dockerfile
-**/compose.yml
+Dockerfile
+.git/

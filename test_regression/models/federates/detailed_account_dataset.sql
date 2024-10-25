@@ -1,5 +1,3 @@
-{%- import 'macros/views.j2' as v -%}
-
 WITH
 most_fraudulent AS (
     SELECT
@@ -16,6 +14,6 @@ most_fraudulent AS (
         rn = 1
 ),
 result AS (
-    {{ v.add_fraud_stats_to_cte(ref, ctx, "most_fraudulent") | indent(4) }}
+    {{ add_fraud_stats_to_cte(ref, ctx, "most_fraudulent") | indent(4) }}
 )
 SELECT * FROM result

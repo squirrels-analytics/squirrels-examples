@@ -9,7 +9,7 @@ packages: []
 
 connections:
   - name: default
-    url: {{ env_vars.sqlite_conn_str }} # sqlite:///database/cc_fraud.db
+    url: {{ env_vars.sqlite_conn_str }} # sample available at: sqlite:///{project_path}/database/cc_fraud.db
 
 
 datasets:

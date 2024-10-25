@@ -1,5 +1,3 @@
-{%- from 'macros/weather_metrics.sql' import get_metrics -%}
-
 WITH
 weather_by_date_with_period_starts AS (
     

@@ -1,7 +1,0 @@
-services:
-  squirrels:
-    build:
-      context: ../
-      dockerfile: mortgage_analysis/Dockerfile
-    ports:
-      - 8080:4465

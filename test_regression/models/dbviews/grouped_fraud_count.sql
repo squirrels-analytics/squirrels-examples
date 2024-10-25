@@ -1,12 +1,8 @@
-{%- import 'macros/common.j2' as c -%}
-{%- import 'macros/transaction_features.j2' as tf -%}
-{%- import 'macros/views.j2' as v -%}
-
 WITH
 transactions_with_month AS (
-    {{ v.transactions_with_month() | indent(4) }}
+    {{ transactions_with_month() | indent(4) }}
 )
-SELECT {{ tf.full_name() }} as first_last_name, {{ c.cc_num_with_comma(ctx) }}
+SELECT {{ full_name() }} as first_last_name, {{ cc_num_with_comma(ctx) }}
     {{ ctx.group_by_cols }},
     SUM(is_fraud) as num_frauds
 FROM transactions_with_month
@@ -24,5 +20,5 @@ WHERE true
     AND date(dob) >= date({{ ctx.dob_start_date }})
     AND date(dob) <= date({{ ctx.dob_end_date }})
     AND category in ({{ ctx.transaction_category }})
-{% if is_placeholder("name_pattern") -%} AND {{ tf.full_name() }} LIKE :name_pattern {%- endif %}
-GROUP BY {{ tf.full_name() }}, {{ c.cc_num_with_comma(ctx) }} {{ ctx.group_by_cols }}
+{% if is_placeholder("name_pattern") -%} AND {{ full_name() }} LIKE :name_pattern {%- endif %}
+GROUP BY {{ full_name() }}, {{ cc_num_with_comma(ctx) }} {{ ctx.group_by_cols }}

@@ -1,6 +1,6 @@
 project_variables:
   name: mortgage_analysis
-  label: Refinance vs Pay Off House
+  label: Renew Mortgage vs Pay Off House
   major_version: 1
 
 
@@ -26,6 +26,17 @@ datasets:
   
   - name: simulations
     label: Simulations
+    parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - num_trials
+
+
+dashboards:
+  - name: simulation_percentiles
+    label: Simulation Percentiles
     parameters:
       - loan_amount
       - mortgage_payment

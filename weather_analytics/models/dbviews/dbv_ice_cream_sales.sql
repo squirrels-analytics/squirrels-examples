@@ -6,8 +6,8 @@ SELECT
 
 FROM ice_cream_profits
 
-WHERE date >= $start_date 
-    AND date <= $end_date
+WHERE date >= strptime($start_date, '%Y-%m-%d')
+    AND date <= strptime($end_date, '%Y-%m-%d')
 
 GROUP BY date
 

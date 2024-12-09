@@ -13,7 +13,9 @@ See below for descriptions of the examples and the setup required for playing wi
 
 ## Setup
 
-First, create the virtual environment for the project and activate it.
+Note: The steps below were tested on Python 3.12.5 for all project folders.
+
+First, go into a project folder, create the virtual environment for the project, and activate it.
 
 Then, install the squirrels framework and its dependencies.
 

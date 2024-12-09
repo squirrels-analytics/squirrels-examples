@@ -1,0 +1,49 @@
+project_variables:
+  name: mortgage_analysis
+  label: Renew Mortgage vs Pay Off House
+  major_version: 1
+
+
+datasets:
+  - name: amortization
+    label: Amortization Schedule
+    parameters:
+      - loan_amount
+      - mortgage_rate
+      - compound_periods
+      - num_years
+      - num_months
+      - start_date
+  
+  - name: single_scenario
+    label: Single Scenario
+    parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - start_date
+  
+  - name: simulations
+    label: Simulations
+    parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - num_trials
+
+
+dashboards:
+  - name: simulation_percentiles
+    label: Simulation Percentiles
+    parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - num_trials
+
+
+settings:
+  results.cache.ttl_minutes: 0

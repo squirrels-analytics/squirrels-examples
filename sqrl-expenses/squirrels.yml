@@ -1,0 +1,92 @@
+project_variables:
+  name: sample
+  label: Sample Project
+  major_version: 1
+
+
+packages: []
+
+## Example for packages section:
+# packages:
+#   - git: https://.../myrepo.git
+#     revision: v0.1.0
+#     directory: custom_name ## optional
+
+
+## Uses SQLAlchemy URLs. More details here: https://docs.sqlalchemy.org/en/latest/core/engines.html
+connections:
+  - name: default
+    credential: null
+    url: {{ env_vars.sqlite_conn_str }}   ## using Jinja to substitute environment variable from env.yml
+
+
+datasets:
+  - name: dataset_example                 ## model name uses same name unless "model" field is specified
+    label: Dataset Example
+    model: federate_example               ## optional - if not specified, then the "name" field is used
+    scope: public                         ## optional - one of 'public' (default), 'protected', or 'private'
+    parameters:                           ## optional - if not specified, then all parameters are used
+      - group_by
+      - description_filter
+      - start_date
+      - end_date
+      - category
+      - subcategory
+      - min_filter
+      - max_filter
+    traits: {}                            ## optional - defaults to empty object
+  
+  - name: protected_dataset_example       ## requires auth.py file to work
+    label: Dataset Example 2
+    model: federate_example
+    scope: protected
+    parameters:
+      - group_by
+      - description_filter
+      - date_range
+      - category
+      - subcategory
+      - between_filter
+    default_test_set: auth_test1          ## optional - if not specified, uses setting 'selection_test_sets.default_name_used'
+
+
+selection_test_sets:
+  - name: no_auth_test1
+    datasets:                             ## optional section - if not provided, then test set is applicable for any dataset
+      - dataset_example
+    parameters:                           ## optional section - if not provided, then assumes no parameters. For unspecified parameters, default value is used
+      start_date: 2023-07-01              ## this parameter only exists for dataset 'dataset_example'
+  
+  - name: auth_test1
+    datasets:
+      - protected_dataset_example
+    user_attributes:                      ## optional section - required if using test set on non-public datasets
+      role: customer
+    parameters:
+      date_range: [2023-02-01,2023-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
+    
+  - name: auth_test2
+    user_attributes:
+      username: alice                     ## optional - defaults to empty string
+      is_internal: True                   ## optional - defaults to False
+      role: manager
+    parameters:
+      group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"
+
+
+settings: {}
+
+## Default values for settings:
+#   auth.token.expire_minutes: 30
+#   parameters.cache.size: 1024
+#   parameters.cache.ttl_minutes: 60
+#   datasets.cache.size: 128
+#   datasets.cache.ttl_minutes: 60
+#   dashboards.cache.size: 128
+#   dashboards.cache.ttl_minutes: 60
+#   selection_test_sets.default_name_used: default
+#   connections.default_name_used: default
+#   defaults.federates.materialized: table
+#   in_memory_database: sqlite
+#   seeds.infer_schema: True
+#   seeds.na_values: [NA]

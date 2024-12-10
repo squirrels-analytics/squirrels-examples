@@ -74,8 +74,7 @@ selection_test_sets:
       group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"
 
 
-settings:
-  in_memory_database: duckdb
+settings: {}
 
 ## Default values for settings:
 #   auth.token.expire_minutes: 30

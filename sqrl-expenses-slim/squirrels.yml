@@ -1,5 +1,5 @@
 project_variables:
-  name: expenses_transactions
+  name: expenses
   label: Transactions History - Slim Example
   major_version: 1
 

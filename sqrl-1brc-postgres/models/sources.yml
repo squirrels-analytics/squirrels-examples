@@ -1,0 +1,24 @@
+sources:
+  - name: src_weather_data
+    description: A table containing weather data
+    table: weather_data
+
+    update_hints:
+      increasing_column: id
+
+    columns:
+      - name: id
+        type: integer
+        description: The unique identifier for each row
+
+      - name: city
+        type: string
+        description: The city name
+
+      - name: recorded_date
+        type: date
+        description: The date of the temperature measurement
+
+      - name: temperature
+        type: float
+        description: The temperature

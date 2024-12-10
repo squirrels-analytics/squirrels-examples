@@ -9,6 +9,6 @@ FROM {{ ref("dbv_weather_by_date") }} AS a
     LEFT JOIN {{ ref("seed_month_names") }} AS b USING (month_order)
 {%- endif %}
 
-GROUP BY dimension_value
+GROUP BY dimension_value, a.{{ ctx.order_col }}
 
 ORDER BY a.{{ ctx.order_col }}

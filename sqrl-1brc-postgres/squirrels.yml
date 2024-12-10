@@ -1,0 +1,32 @@
+project_variables:
+  name: 1brc-postgres
+  label: 1 Billion Row Challenge - Postgres
+  major_version: 1
+
+
+connections:
+  - name: default
+    type: sqlalchemy
+    uri: {{ env_vars.postgres_uri }}
+
+
+datasets:
+  - name: aggregate_weather
+    label: Aggregate Weather Data
+    scope: public
+
+
+settings: {}
+
+## Default values for settings:
+#   auth.token.expire_minutes: 30
+#   parameters.cache.size: 1024
+#   parameters.cache.ttl_minutes: 60
+#   datasets.cache.size: 128
+#   datasets.cache.ttl_minutes: 60
+#   dashboards.cache.size: 128
+#   dashboards.cache.ttl_minutes: 60
+#   selection_test_sets.default_name_used: default
+#   connections.default_name_used: default
+#   seeds.infer_schema: True
+#   seeds.na_values: []

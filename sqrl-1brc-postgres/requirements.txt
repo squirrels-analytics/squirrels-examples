@@ -1,0 +1,2 @@
+squirrels @ git+https://github.com/squirrels-analytics/squirrels.git@9208cba5cfd04c8f7641d94e3b841d48e8e14182
+psycopg2-binary

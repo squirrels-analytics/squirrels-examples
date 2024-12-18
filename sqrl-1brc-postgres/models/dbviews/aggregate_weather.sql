@@ -1,9 +1,10 @@
 SELECT city, 
-    min(temperature) as min_temperature, 
-    max(temperature) as max_temperature, 
-    avg(temperature) as avg_temperature 
+    MIN(temperature) AS min_temperature, 
+    MAX(temperature) AS max_temperature, 
+    AVG(temperature) AS avg_temperature,
+    (1::int / 2::int) AS translate_test
 
-FROM {{ source("src_weather_data") }} wd 
+FROM {{ source("src_weather_data") }}
 
 GROUP BY city 
 

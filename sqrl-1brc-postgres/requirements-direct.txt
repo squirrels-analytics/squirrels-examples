@@ -1,0 +1,6 @@
+# For Squirrels
+squirrels @ git+https://github.com/squirrels-analytics/squirrels.git@37ede20
+psycopg2-binary
+
+# Additional requirements for createMeasurements.py
+tqdm>=4.66.0

@@ -1,5 +1,4 @@
-description: |
-  This is an example of a database view model. It groups the weather data by city and calculates temperature statistics.
+description: "Weather data aggregated by city"
 
 columns:
   - name: city
@@ -13,7 +12,7 @@ columns:
   - name: max_temperature
     type: DECIMAL(4, 1)
     description: The maximum temperature
-  
+
   - name: avg_temperature
     type: DECIMAL(4, 1)
     description: The average temperature

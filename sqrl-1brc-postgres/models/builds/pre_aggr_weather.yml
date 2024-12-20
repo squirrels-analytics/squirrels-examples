@@ -1,0 +1,26 @@
+description: "Weather data pre-aggregated by city and date"
+
+columns:
+  - name: city
+    type: string
+    description: The city name
+
+  - name: recorded_date
+    type: DATE
+    description: The date the weather was recorded
+
+  - name: min_temperature
+    type: FLOAT
+    description: The minimum temperature
+
+  - name: max_temperature
+    type: FLOAT
+    description: The maximum temperature
+
+  - name: total_temperature
+    type: DOUBLE
+    description: The sum of all temperature values
+
+  - name: total_records
+    type: INT
+    description: The total number of records

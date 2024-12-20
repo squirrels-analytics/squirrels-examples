@@ -8,17 +8,17 @@ sources:
 
     columns:
       - name: id
-        type: integer
+        type: INTEGER
         description: The unique identifier for each row
 
       - name: city
-        type: string
+        type: STRING
         description: The city name
 
       - name: recorded_date
-        type: date
+        type: DATE
         description: The date of the temperature measurement
 
       - name: temperature
-        type: float
+        type: FLOAT
         description: The temperature

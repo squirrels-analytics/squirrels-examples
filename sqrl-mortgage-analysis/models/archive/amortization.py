@@ -1,10 +1,10 @@
 from squirrels import ModelArgs
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import pandas as pd
+import polars as pl
 
 
-def main(sqrl: ModelArgs) -> pd.DataFrame:
+def main(sqrl: ModelArgs) -> pl.DataFrame:
     start_date = sqrl.get_placeholder_value("start_date")
     current_month = datetime.strptime(start_date, "%Y-%m-%d")
     principal_remaining = sqrl.ctx["loan_amount"]
@@ -26,5 +26,4 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
         current_month = current_month + relativedelta(months=1)
         principal_remaining = principal_remaining -  principal_payment
 
-    df = pd.DataFrame(rows)
-    return df.round(2)
+    return pl.DataFrame(rows).select(pl.all().round(2))

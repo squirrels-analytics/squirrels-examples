@@ -1,0 +1,41 @@
+description: |
+  This shows a single scenario comparing net worth between renewing the mortgage and paying down the house based on stock returns randomly generated from a normal distribution.
+
+depends_on:
+  - seed_snp500
+
+columns:
+  - name: month_number
+    type: integer
+    description: The month number
+    category: misc
+
+  - name: current_month
+    type: string
+    description: The current month
+    category: misc
+
+  - name: stock_return
+    type: float
+    description: The stock return
+    category: measure
+
+  - name: deposit_if_renew_mortgage
+    type: float
+    description: The deposit to stock investment if renewing the mortgage
+    category: measure
+
+  - name: value_if_renew_mortgage
+    type: float
+    description: The value of the stock investment if renewing the mortgage
+    category: measure
+
+  - name: deposit_if_pay_down_house
+    type: float
+    description: The deposit to stock investment if paying down the house
+    category: measure
+
+  - name: value_if_pay_down_house
+    type: float
+    description: The value of the stock investment if paying down the house
+    category: measure

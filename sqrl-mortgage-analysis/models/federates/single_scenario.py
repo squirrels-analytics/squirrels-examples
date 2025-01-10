@@ -1,16 +1,11 @@
-from typing import Iterable
-from squirrels import ModelArgs, ModelDepsArgs
+from squirrels import ModelArgs
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import pandas as pd
+import polars as pl
 
 
-def dependencies(sqrl: ModelDepsArgs) -> Iterable:
-    return ["seed_snp500"]
-
-
-def main(sqrl: ModelArgs) -> pd.DataFrame:
-    (df_snp,) = [sqrl.ref(name) for name in dependencies(sqrl)]
+def main(sqrl: ModelArgs) -> pl.DataFrame:
+    df_snp = sqrl.ref("seed_snp500")
 
     start_date = sqrl.get_placeholder_value("start_date")
     total_num_months = sqrl.ctx["total_num_months"]
@@ -19,7 +14,12 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
     curr_month = datetime.strptime(start_date, "%Y-%m-%d")
     loan_amount = sqrl.ctx["loan_amount"]
 
-    stock_returns = df_snp["relative_change"].sample(total_num_months, replace=True)
+    stock_returns = (df_snp
+        .select('relative_change').collect()
+        .sample(n=total_num_months, with_replacement=True)
+        .get_column('relative_change')
+        .to_numpy()
+    )
 
     prev_row = {
         "month_number": 0,
@@ -34,7 +34,7 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
     rows = [prev_row]
     for idx in range(total_num_months):
         curr_month = curr_month + relativedelta(months=1)
-        stock_return = stock_returns.values[idx]
+        stock_return = stock_returns[idx]
         row = {
             "month_number": idx + 1,
             "current_month": curr_month.strftime("%Y-%m-%d"),
@@ -47,10 +47,11 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
         rows.append(row)
         prev_row = row
 
-    df = pd.DataFrame(rows)
+    df = pl.DataFrame(rows)
 
     dollars_columns = ["deposit_if_renew_mortgage", "value_if_renew_mortgage", "deposit_if_pay_down_house", "value_if_pay_down_house"]
-    for col in dollars_columns:
-        df[col] = df[col].round(2)
+    df = df.with_columns([
+        pl.col(col).round(2) for col in dollars_columns
+    ])
 
     return df

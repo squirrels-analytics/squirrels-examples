@@ -1,0 +1,37 @@
+sources:
+  - name: src_transactions
+    connection: default           # optional - if not provided, will use the connection named "default" or the default connection specified in settings
+    table: expenses               # optional - if not provided, will use the "name" field of the source
+
+    # For performance reasons, avoid specifying primary_key for large tables if upserts are not required
+    primary_key: [id]             # optional - if not provided, then this is an insert-only table for incremental loads - otherwise, this is an upsert table
+    
+    update_hints:
+      increasing_column: date     # optional - if not provided, will always do full refresh, otherwise uses this column for incremental loads
+      strictly_increasing: false  # optional - default is true - if false, then maximum value of column is removed before incremental loads
+
+    columns:
+      - name: id
+        type: string
+        description: The unique identifier for the transaction
+        category: dimension
+
+      - name: date
+        type: date
+        description: The date of the transaction
+        category: dimension
+
+      - name: subcategory_id
+        type: string
+        description: The ID of the subcategory of the transaction
+        category: dimension
+
+      - name: amount
+        type: float
+        description: The amount of the transaction
+        category: measure
+
+      - name: description
+        type: string
+        description: The description of the transaction
+        category: dimension

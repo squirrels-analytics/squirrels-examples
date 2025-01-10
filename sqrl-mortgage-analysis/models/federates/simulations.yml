@@ -1,0 +1,23 @@
+description: |
+  Given the number of trials, this model runs multiple simulations of the net worth between renewing the mortgage and paying down the house.
+
+columns:
+  - name: trial_number
+    type: integer
+    description: The trial number
+    category: misc
+
+  - name: value_if_renew_mortgage
+    type: float
+    description: The value of the stock investment at the end of the mortgage period if renewing the mortgage
+    category: measure
+
+  - name: value_if_pay_down_house
+    type: float
+    description: The value of the stock investment at the end of the mortgage period if paying down the house
+    category: measure
+
+  - name: perc_diff
+    type: float
+    description: The percentage that the value of the stock investment at the end of the mortgage period is greater by if renewing the mortgage instead of paying down the house
+    category: measure

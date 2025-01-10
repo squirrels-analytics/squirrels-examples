@@ -1,0 +1,35 @@
+description: |
+  This model calculates the amortization of a mortgage over a given period of time.
+
+eager: true
+
+columns:
+  - name: month_number
+    type: integer
+    description: The month number
+    category: misc
+
+  - name: current_month
+    type: date
+    description: The current month
+    category: misc
+
+  - name: principal_start
+    type: float
+    description: The principal at the beginning of the month
+    category: measure
+
+  - name: payment
+    type: float
+    description: The monthly mortgage payment
+    category: measure
+
+  - name: interest_payment
+    type: float
+    description: The interest portion of the monthly mortgage payment
+    category: measure
+
+  - name: principal_payment
+    type: float
+    description: The principal portion of the monthly mortgage payment
+    category: measure

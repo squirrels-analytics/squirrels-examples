@@ -1,0 +1,24 @@
+description: |
+  This is an example of a database view model. It finds the total amount spent by month.
+
+  Parameters are available to filter the date and amount of the transactions.
+
+connection: default
+
+depends_on:
+  - src_transactions
+
+columns:
+  - name: month
+    type: string
+    description: The months for which the amount is aggregated by
+    category: dimension
+    depends_on:
+      - src_transactions.date
+  
+  - name: total_amount
+    type: float
+    description: The total amount spent by the group by dimension
+    category: measure
+    depends_on:
+      - src_transactions.amount

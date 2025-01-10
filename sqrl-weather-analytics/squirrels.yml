@@ -9,11 +9,11 @@ packages: []
 
 connections:
   - name: default
-    url: sqlite:///./assets/weather.db
+    uri: sqlite:///./assets/weather.db
   
   ## First, run the following in your Motherduck account: ATTACH 'md:_share/squirrels_analytics_public_db/597bd9c2-72c8-49b9-8ed6-f3d4441fda24'
   - name: duckdb
-    url: {{ env_vars.motherduck_url }}
+    uri: {{ env_vars.motherduck_url }}
 
 
 datasets:

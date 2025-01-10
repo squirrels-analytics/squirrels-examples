@@ -23,7 +23,7 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
     It is imperative to set the correct return type in the function signature for "main" above! It allows Squirrels to provide the correct format to 
     the data catalog without having to run this function.
     """
-    df = await sqrl.dataset("simulations")
+    df = (await sqrl.dataset("simulations")).to_pandas()
 
     # Create a figure with two subplots
     fig, (ax0, ax1) = plt.subplots(2, figsize=(6, 8))

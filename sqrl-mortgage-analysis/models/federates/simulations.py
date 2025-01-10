@@ -1,8 +1,9 @@
 from squirrels import ModelArgs
-import pandas as pd, numpy as np
+import polars as pl
+import numpy as np
 
 
-def main(sqrl: ModelArgs) -> pd.DataFrame:
+def main(sqrl: ModelArgs) -> pl.DataFrame:
 
     def run_single_simulation(stock_returns):
         assert len(stock_returns) == sqrl.ctx["total_num_months"]
@@ -33,5 +34,7 @@ def main(sqrl: ModelArgs) -> pd.DataFrame:
             "perc_diff": difference / value_if_pay_down_house * 100
         })
 
-    df = pd.DataFrame(rows)
-    return df.round(3)
+    df = pl.DataFrame(rows).with_columns([
+        pl.col(["value_if_renew_mortgage", "value_if_pay_down_house", "perc_diff"]).round(3)
+    ])
+    return df

@@ -1,0 +1,21 @@
+description: |
+  Lookup table for the subcategory IDs and names of transactions.
+
+cast_column_types: true
+
+columns:
+  - name: subcategory_id
+    type: string
+    description: The subcategory ID
+    category: dimension
+  
+  - name: subcategory
+    type: string
+    description: The human-readable subcategory name
+    category: dimension
+  
+  - name: category_id
+    type: string
+    description: The category ID that the subcategory belongs to
+    category: dimension
+  

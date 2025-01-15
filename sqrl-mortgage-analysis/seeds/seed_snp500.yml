@@ -1,0 +1,20 @@
+description: |
+  S&P 500 stock value from 1970 to mid-2024
+
+cast_column_types: true
+
+columns:
+  - name: date
+    type: date
+    description: The date of the record
+    category: dimension
+
+  - name: price
+    type: float
+    description: The value of the S&P 500 stock
+    category: measure
+  
+  - name: relative_change
+    type: float
+    description: The relative change in the S&P 500 stock from the previous day
+    category: measure

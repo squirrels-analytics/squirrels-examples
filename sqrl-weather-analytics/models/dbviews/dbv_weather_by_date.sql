@@ -5,13 +5,13 @@ aliased AS (
         temp_max AS temperature_max,
         temp_min AS temperature_min
 
-    FROM weather
+    FROM {{ source('src_weather') }}
 
 ),
 aggregated AS (
 
     SELECT
-        CAST(date AS VARCHAR) AS date,
+        date,
         {{ get_metrics() | indent(4) }},
         CAST(condition AS VARCHAR) AS condition,
         CAST(STRFTIME('%Y', date) AS INT) AS year,
@@ -20,21 +20,14 @@ aggregated AS (
     
     FROM aliased
     
-    GROUP BY date
+    GROUP BY date, condition
 
-),
-weather_by_date_with_quarter AS (
-
-    SELECT *,
-        (month_order - 1) / 3 + 1 AS quarter_order
-    
-    FROM aggregated
-    
 )
-SELECT *,
-    'Q' || quarter_order AS quarter
 
-FROM weather_by_date_with_quarter
+SELECT *,
+    'Q' || CAST(FLOOR((month_order - 1) / 3 + 1) AS INT) AS quarter
+
+FROM aggregated
 
 {%- if is_placeholder("start_date") %}
 

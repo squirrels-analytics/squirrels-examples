@@ -1,0 +1,56 @@
+sources:
+  - name: src_weather
+    connection: default
+    table: weather
+
+    columns:
+      - name: date
+        type: string
+        description: The date of the weather statistics in YYYY-MM-DD format
+        category: dimension
+      
+      - name: precipitation
+        type: float
+        description: The amount of precipitation for the time period in cm
+        category: measure
+
+      - name: temp_max
+        type: float
+        description: The maximum temperature for the time period in degrees Celsius
+        category: measure
+      
+      - name: temp_min
+        type: float
+        description: The minimum temperature for the time period in degrees Celsius
+        category: measure
+      
+      - name: wind
+        type: float
+        description: The average wind speed for the time period in km/h
+        category: measure
+      
+      - name: condition
+        type: string
+        description: The weather condition of the time period (e.g. "sun", "fog", "rain")
+        category: dimension
+
+  
+  - name: src_ice_cream_profits
+    connection: duckdb
+    table: ice_cream_profits
+
+    columns:
+      - name: date
+        type: date
+        description: The date of the record
+        category: dimension
+      
+      - name: time_period_start
+        type: time
+        description: The start of the time period for the record
+        category: dimension
+
+      - name: ice_cream_profits
+        type: float
+        description: The total ice cream profits for the time period
+        category: measure

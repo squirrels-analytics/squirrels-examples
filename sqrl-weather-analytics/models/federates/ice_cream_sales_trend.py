@@ -1,33 +1,31 @@
-from typing import Iterable
-from squirrels import ModelDepsArgs, ModelArgs
+from squirrels import ModelArgs
 from sklearn.linear_model import LinearRegression
-import pandas as pd, numpy as np
+import polars as pl, numpy as np
 
 
-def dependencies(sqrl: ModelDepsArgs) -> Iterable[str]:
-    return ["dbv_weather_by_date", "dbv_ice_cream_sales"]
-
-
-def main(sqrl: ModelArgs) -> pd.DataFrame:
+def main(sqrl: ModelArgs) -> pl.LazyFrame:
     """
     Create federated models by joining/processing dependent database views and/or other federated models to
     form and return the result as a new pandas DataFrame.
     """
-    DBV_WEATHER_BY_DATE, DBV_ICE_CREAM_SALES = dependencies(sqrl)
-    df_weather = sqrl.ref(DBV_WEATHER_BY_DATE)
-    df_ice_cream = sqrl.ref(DBV_ICE_CREAM_SALES)
+    df_weather: pl.LazyFrame = sqrl.ref("dbv_weather_by_date")
+    df_ice_cream: pl.LazyFrame = sqrl.ref("dbv_ice_cream_sales")
 
     ## Join dataframes
-    df_joined = df_weather.merge(df_ice_cream, on="date")
+    df_joined = df_weather.join(df_ice_cream, on="date")
 
     ## Get ML model
     model: LinearRegression = sqrl.connections["ice_cream_regr_model"]
     
     ## Make prediction
-    df_joined["temperature_c"] = df_joined["temperature_max"]
-    prediction = model.predict(df_joined[["temperature_c"]].rename(columns={"temperature_c": "temp_c"}))
-    df_joined["expected_profit"] = np.round(prediction, 2)
+    df_joined = df_joined.with_columns(temperature_c=pl.col("temperature_max"))
+    
+    # Collect the data from the lazyframe
+    temp_df = df_joined.select("temperature_c").collect().to_pandas().rename(columns={"temperature_c": "temp_c"})
+    prediction = model.predict(temp_df)
+    
+    df_joined = df_joined.with_columns(expected_profit=pl.lit(np.round(prediction, 2)))
 
-    ## Select columns
-    df = df_joined[["date", "ice_cream_profits", "temperature_c", "expected_profit"]]
+    ## Select columns and convert back to pandas
+    df = df_joined.select(["date", "ice_cream_profits", "temperature_c", "expected_profit"])
     return df

@@ -2,10 +2,10 @@ WITH
 weather_by_date_with_period_starts AS (
     
     SELECT *,
-        DATE(year||'-01-01') AS start_of_year,
-        DATE(year||'-01-01', '+'||((quarter_order-1)*3)||' month') AS start_of_quarter,
-        DATE(year||'-01-01', '+'||(month_order-1)||' month') AS start_of_month,
-        DATE(date, '-6 days', 'weekday 0') AS start_of_week
+        DATE_TRUNC('year', "date"::DATE) AS start_of_year,
+        DATE_TRUNC('quarter', "date"::DATE) AS start_of_quarter,
+        DATE_TRUNC('month', "date"::DATE) AS start_of_month,
+        DATE_TRUNC('week', "date"::DATE) AS start_of_week
     
     FROM {{ ref("dbv_weather_by_date") }}
 )
@@ -16,6 +16,6 @@ SELECT
 
 FROM weather_by_date_with_period_starts
 
-GROUP BY reference_date
+GROUP BY {{ ctx.dim_col }}
 
-ORDER BY reference_date
+ORDER BY {{ ctx.dim_col }}

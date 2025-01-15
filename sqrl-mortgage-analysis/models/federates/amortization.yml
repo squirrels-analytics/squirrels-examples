@@ -33,3 +33,8 @@ columns:
     type: float
     description: The principal portion of the monthly mortgage payment
     category: measure
+
+  - name: principal_remaining
+    type: float
+    description: The principal remaining at the end of the month
+    category: measure

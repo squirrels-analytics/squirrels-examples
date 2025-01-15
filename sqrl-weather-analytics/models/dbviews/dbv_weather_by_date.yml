@@ -1,0 +1,47 @@
+description: "Weather statistics for each date under the filtered date range"
+
+depends_on:
+  - src_weather
+
+columns:
+  - name: date
+    type: string
+    description: The date of the weather statistics in YYYY-MM-DD format
+    category: dimension
+    depends_on:
+      - src_weather.date
+
+  - name: precipitation
+    type: float
+    description: The total amount of precipitation for the date in cm
+    category: measure
+    depends_on:
+      - src_weather.precipitation
+
+  - name: temperature_max
+    type: float
+    description: The maximum temperature for the date in degrees Celsius
+    category: measure
+    depends_on:
+      - src_weather.temp_max
+
+  - name: temperature_min
+    type: float
+    description: The minimum temperature for the date in degrees Celsius
+    category: measure
+    depends_on:
+      - src_weather.temp_min
+      
+  - name: wind
+    type: float
+    description: The average wind speed for the date in km/h
+    category: measure
+    depends_on:
+      - src_weather.wind
+
+  - name: condition
+    type: string
+    description: The most common weather condition for the date (e.g. "sun", "fog", "rain")
+    category: dimension
+    depends_on:
+      - src_weather.condition

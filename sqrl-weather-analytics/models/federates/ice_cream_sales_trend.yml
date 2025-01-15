@@ -1,0 +1,5 @@
+description: "This model predicts the expected profit of ice cream sales based on the temperature."
+
+depends_on:
+  - dbv_weather_by_date
+  - dbv_ice_cream_sales

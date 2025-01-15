@@ -1,0 +1,21 @@
+description: Ice cream sales by date
+
+connection: duckdb
+
+depends_on:
+  - src_ice_cream_profits
+
+columns:
+  - name: date
+    type: string
+    description: The date of the record in YYYY-MM-DD format
+    category: dimension
+    depends_on:
+      - src_ice_cream_profits.date
+
+  - name: ice_cream_profits
+    type: decimal
+    description: The total ice cream profits for the date
+    category: measure
+    depends_on:
+      - src_ice_cream_profits.ice_cream_profits

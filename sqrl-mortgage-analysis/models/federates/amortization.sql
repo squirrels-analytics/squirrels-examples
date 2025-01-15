@@ -4,10 +4,10 @@ cte AS (
     SELECT
         0 AS month,
         ($start_date::DATE - INTERVAL 1 MONTH) AS current_month,
-        NULL AS principal_start,
-        NULL AS payment,
-        NULL AS interest_payment,
-        {{ ctx.loan_amount }} AS principal_remaining
+        NULL::DOUBLE AS principal_start,
+        NULL::DOUBLE AS payment,
+        NULL::DOUBLE AS interest_payment,
+        {{ ctx.loan_amount }}::DOUBLE AS principal_remaining
     
     UNION ALL
     
@@ -25,12 +25,12 @@ cte AS (
 
 )
 SELECT
-    month AS month_number,
     current_month::DATE AS current_month,
-    ROUND(principal_start, 2) AS principal_start,
-    ROUND(payment, 2) AS payment,
-    ROUND(interest_payment, 2) AS interest_payment,
-    ROUND(payment - interest_payment, 2) AS principal_payment
+    principal_start::DECIMAL(10, 2) AS principal_start,
+    payment::DECIMAL(10, 2) AS payment,
+    interest_payment::DECIMAL(10, 2) AS interest_payment,
+    (payment - interest_payment)::DECIMAL(10, 2) AS principal_payment,
+    principal_remaining::DECIMAL(10, 2) AS principal_remaining
 
 FROM cte
 

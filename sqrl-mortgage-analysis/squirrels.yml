@@ -12,7 +12,6 @@ datasets:
     parameters:
       - loan_amount
       - mortgage_rate
-      - compound_periods
       - num_years
       - num_months
       - start_date
@@ -31,7 +30,7 @@ datasets:
   - name: simulations
     label: Simulations
     description: |
-      Given the number of trials, this dataset runs multiple simulations of the net worth (at the end of the mortgage period) between renewing the mortgage and paying down the house.
+      Given the number of trials, this dataset runs multiple simulations to compare the net worth (at the end of the mortgage period) between renewing the mortgage and paying down the house.
     parameters:
       - loan_amount
       - mortgage_payment

@@ -28,7 +28,6 @@ def main(sqrl: ModelArgs) -> pl.DataFrame:
         value_if_renew_mortgage, value_if_pay_down_house = run_single_simulation(data[idx::num_trials])
         difference = value_if_renew_mortgage - value_if_pay_down_house
         rows.append({
-            "trial_number": idx+1,
             "value_if_renew_mortgage": value_if_renew_mortgage / 1000,
             "value_if_pay_down_house": value_if_pay_down_house / 1000,
             "perc_diff": difference / value_if_pay_down_house * 100

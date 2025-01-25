@@ -2,7 +2,7 @@ name: Build, Push, Deploy.
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
     paths: ['sqrl-mortgage-analysis/**']
     
 jobs:
@@ -34,7 +34,7 @@ jobs:
   
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/dev' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     environment: prod
     needs: [ build_and_push ]
     steps:

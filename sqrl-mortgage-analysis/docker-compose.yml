@@ -16,12 +16,10 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-      # - "443:443"
-    # environment:
-    #   - CERTBOT_EMAIL=youremail@gmail.com
+      - "443:443"
     volumes:
       - ./nginx:/etc/nginx/conf.d:ro
-      # - letsencrypt:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt
     depends_on:
       - squirrels
     logging:

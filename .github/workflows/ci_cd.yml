@@ -3,7 +3,7 @@ name: Build, Push, Deploy.
 on:
   push:
     branches: [ dev ]
-    paths: ['sqrl-mortgage-analysis/**']
+    # paths: ['sqrl-mortgage-analysis/**']
     
 jobs:
   build_and_push:

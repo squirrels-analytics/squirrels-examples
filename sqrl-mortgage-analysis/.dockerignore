@@ -7,6 +7,7 @@
 env.yml
 target/
 sqrl_packages/
+logs/
 
 # additional files for docker to ignore
 Dockerfile

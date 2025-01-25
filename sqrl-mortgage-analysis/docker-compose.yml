@@ -1,0 +1,29 @@
+services:
+  squirrels:
+    image: timhuang95/mortgage-analysis-squirrels:latest
+    ports:
+      - "4465:4465"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"
+
+  nginx:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - squirrels
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"

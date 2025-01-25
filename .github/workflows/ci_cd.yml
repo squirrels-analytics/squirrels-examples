@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./sqrl-mortgage-analysis
-          file: ./Dockerfile
+          file: ./sqrl-mortgage-analysis/Dockerfile
           push: true
           tags: timhuang95/mortgage-analysis-squirrels:latest
           labels: ${{ steps.meta.outputs.labels }}

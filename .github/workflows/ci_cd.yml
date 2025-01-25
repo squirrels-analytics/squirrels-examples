@@ -3,7 +3,7 @@ name: Build, Push, Deploy.
 on:
   push:
     branches: [ dev ]
-    # paths: ['sqrl-mortgage-analysis/**']
+    paths: ['sqrl-mortgage-analysis/**']
     
 jobs:
   build_and_push:
@@ -35,6 +35,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/dev' }}
+    environment: prod
     needs: [ build_and_push ]
     steps:
       - name: Checkout code
@@ -42,7 +43,7 @@ jobs:
       - name: copy file via ssh key
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: 54.236.110.112
+          host: ${{ vars.MORTGAGE_ANALYSIS_HOST }}
           username: ec2-user
           key: ${{ secrets.MORTGAGE_ANALYSIS_KEY }}
           source: "sqrl-mortgage-analysis/docker-compose.yml, sqrl-mortgage-analysis/nginx/nginx.conf"
@@ -51,7 +52,7 @@ jobs:
       - name: run docker-compose
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: 54.236.110.112
+          host: ${{ vars.MORTGAGE_ANALYSIS_HOST }}
           username: ec2-user
           key: ${{ secrets.MORTGAGE_ANALYSIS_KEY }}
           script: |

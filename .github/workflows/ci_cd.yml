@@ -9,9 +9,6 @@ jobs:
   build_and_push:
     name: Push docker image to Docker Hub
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./sqrl-mortgage-analysis
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
@@ -29,6 +26,7 @@ jobs:
           images: timhuang95/mortgage-analysis-squirrels
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
+        working-directory: ./sqrl-mortgage-analysis
         with:
           context: .
           file: ./Dockerfile

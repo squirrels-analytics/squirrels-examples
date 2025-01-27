@@ -1,0 +1,18 @@
+label: Simulation Percentiles
+
+description: Boxplots comparing the net worth at the end of the mortgage period between renewing the mortgage and paying down the house
+
+scope: public
+
+format: png
+
+parameters:
+      - loan_amount
+      - mortgage_payment
+      - num_years
+      - num_months
+      - num_trials
+
+depends_on:
+  - name: simulations
+    dataset: simulations

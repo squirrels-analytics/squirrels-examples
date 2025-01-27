@@ -51,7 +51,7 @@ def main(sqrl: ModelArgs) -> pl.DataFrame:
 
     dollars_columns = ["deposit_if_renew_mortgage", "value_if_renew_mortgage", "deposit_if_pay_down_house", "value_if_pay_down_house"]
     df = df.with_columns([
-        pl.col(col).round(2) for col in dollars_columns
+        pl.col(col).cast(pl.Decimal(precision=16, scale=2)) for col in dollars_columns
     ])
 
     return df

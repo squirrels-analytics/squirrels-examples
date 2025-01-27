@@ -28,12 +28,13 @@ def main(sqrl: ModelArgs) -> pl.DataFrame:
         value_if_renew_mortgage, value_if_pay_down_house = run_single_simulation(data[idx::num_trials])
         difference = value_if_renew_mortgage - value_if_pay_down_house
         rows.append({
-            "value_if_renew_mortgage": value_if_renew_mortgage / 1000,
-            "value_if_pay_down_house": value_if_pay_down_house / 1000,
+            "value_if_renew_mortgage": value_if_renew_mortgage,
+            "value_if_pay_down_house": value_if_pay_down_house,
             "perc_diff": difference / value_if_pay_down_house * 100
         })
 
+    columns_to_round = ["value_if_renew_mortgage", "value_if_pay_down_house", "perc_diff"]
     df = pl.DataFrame(rows).with_columns([
-        pl.col(["value_if_renew_mortgage", "value_if_pay_down_house", "perc_diff"]).round(3)
+        pl.col(x).cast(pl.Decimal(precision=16, scale=2)) for x in columns_to_round
     ])
     return df

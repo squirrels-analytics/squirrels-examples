@@ -9,12 +9,12 @@ columns:
 
   - name: value_if_renew_mortgage
     type: float
-    description: The value of the stock investment at the end of the mortgage period if renewing the mortgage
+    description: The value of the stock investment at the end of the mortgage period if renewing the mortgage (in dollars)
     category: measure
 
   - name: value_if_pay_down_house
     type: float
-    description: The value of the stock investment at the end of the mortgage period if paying down the house
+    description: The value of the stock investment at the end of the mortgage period if paying down the house (in dollars)
     category: measure
 
   - name: perc_diff

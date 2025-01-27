@@ -4,15 +4,10 @@ description: |
 eager: true
 
 columns:
-  - name: month_number
-    type: integer
-    description: The month number
-    category: misc
-
   - name: current_month
     type: date
-    description: The current month
-    category: misc
+    description: The current month in ascending order
+    category: dimension
 
   - name: principal_start
     type: float

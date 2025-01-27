@@ -7,13 +7,13 @@ depends_on:
 columns:
   - name: month_number
     type: integer
-    description: The month number
+    description: The month number, starting from 0
     category: misc
 
   - name: current_month
     type: string
-    description: The current month
-    category: misc
+    description: The current month in YYYY-MM-DD format and in ascending order
+    category: dimension
 
   - name: stock_return
     type: float
@@ -27,7 +27,7 @@ columns:
 
   - name: value_if_renew_mortgage
     type: float
-    description: The value of the stock investment if renewing the mortgage
+    description: The value of the stock investment at the beginning of the month if renewing the mortgage
     category: measure
 
   - name: deposit_if_pay_down_house
@@ -37,5 +37,5 @@ columns:
 
   - name: value_if_pay_down_house
     type: float
-    description: The value of the stock investment if paying down the house
+    description: The value of the stock investment at the beginning of the month if paying down the house
     category: measure

@@ -10,11 +10,11 @@ columns:
     category: dimension
 
   - name: price
-    type: float
+    type: double
     description: The value of the S&P 500 stock
     category: measure
   
   - name: relative_change
-    type: float
+    type: double
     description: The relative change in the S&P 500 stock from the previous day
     category: measure

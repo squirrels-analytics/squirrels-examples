@@ -8,7 +8,7 @@ def main(sqrl: ParametersArgs) -> None:
 
     ## Mortgage Rate Parameter
     p.NumberParameter.CreateSimple(
-        "mortgage_rate", "Mortgage Rate (Percent)", min_value="0", max_value="20", increment="0.01", default_value="4.34",
+        "mortgage_rate", "Mortgage Rate (Percent)", min_value="0", max_value="20", increment="0.01", default_value="4.00",
         description="Annual mortgage rate in percent"
     )
 
@@ -24,7 +24,7 @@ def main(sqrl: ParametersArgs) -> None:
     p.SingleSelectParameter.CreateWithOptions("compound_periods", "Compounding Periods per Year", compound_periods_options)
 
     ## Number of Years Parameter
-    p.NumberParameter.CreateSimple("num_years", "Number Of Years", min_value=0, max_value=50, default_value=20)
+    p.NumberParameter.CreateSimple("num_years", "Number Of Years", min_value=0, max_value=50, default_value=25)
     
     ## Number of Years Parameter
     p.NumberParameter.CreateSimple("num_months", "Number Of Additional Months", min_value=0, max_value=11, default_value=0)
@@ -33,7 +33,7 @@ def main(sqrl: ParametersArgs) -> None:
     p.DateParameter.CreateSimple("start_date", "Start Date", default_date="2026-01-01")
 
     ## Mortgage Payment Parameter
-    p.TextParameter.CreateSimple("mortgage_payment", "Monthly Mortgage Payment", default_text="3000", input_type="number")
+    p.TextParameter.CreateSimple("mortgage_payment", "Monthly Mortgage Payment", default_text="3500", input_type="number")
 
     ## Number of Trials Parameter
     p.NumberParameter.CreateSimple("num_trials", "Number Of Trials", min_value=100, max_value=10_000, increment=100, default_value=1000)

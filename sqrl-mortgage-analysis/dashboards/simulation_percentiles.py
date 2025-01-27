@@ -24,6 +24,7 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
     the data catalog without having to run this function.
     """
     df = (await sqrl.dataset("simulations")).to_pandas()
+    df = df.apply(pd.to_numeric)
 
     # Create a figure with two subplots
     fig, (ax0, ax1) = plt.subplots(2, figsize=(6, 8))

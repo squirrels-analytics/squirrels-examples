@@ -29,7 +29,7 @@ sqrl run
 First, create a directory for your certificates: 
 
 ```bash
-mkdir C:\nginx-certs
+mkdir C:/nginx-certs
 ```
 
 You can generate self-signed certificates using OpenSSL. If you don't have OpenSSL installed, you can use Docker to generate them:
@@ -59,8 +59,8 @@ First, install Docker and Docker Compose:
 - https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
 
 Next, copy the following volume files:
-- sqrl-weather-analytics/.env.local
-- sqrl-expenses/.env.local
+- sqrl-weather-analytics/.env.local → ~/volumes/sqrl-weather-analytics/.env.local
+- sqrl-expenses/.env.local → ~/volumes/sqrl-expenses/.env.local
 
 To use a custom domain name like "subdomain.duckdns.org", you'll need to:
 

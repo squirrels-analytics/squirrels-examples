@@ -4,12 +4,11 @@ on:
   push:
     branches: [ dev ]
     paths:
+      - '!docker-compose.yml'
+      - '!nginx.conf'
+      - '!.github/workflows/infrastructure.yml'
       - 'sqrl-weather-analytics/**'
       - '.github/workflows/sqrl-weather-analytics.yml'
-    paths-ignore:
-      - 'docker-compose.yml'
-      - 'nginx.conf'
-      - '.github/workflows/infrastructure.yml'
     
 jobs:
   deploy:
@@ -26,7 +25,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
           source: "sqrl-weather-analytics/"
-          target: .
+          target: ./app
           strip_components: 0
       
       - name: Build and deploy
@@ -36,6 +35,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
           script: |
+            # Change to the app directory
+            cd ./app
+            
             # Build only the changed project
             docker-compose build squirrels-weather
             

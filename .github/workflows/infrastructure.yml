@@ -16,14 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Copy configuration files to server
+      - name: Copy full repository to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ vars.SQUIRRELS_HOST }}
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
-          source: "docker-compose.yml,nginx/"
-          target: .
+          source: .
+          target: ./app
           strip_components: 0
       
       - name: Rebuild and deploy all services
@@ -33,6 +33,9 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
           script: |
+            # Change to the app directory
+            cd ./app
+            
             # Rebuild all services since infrastructure changed
             docker-compose build
             

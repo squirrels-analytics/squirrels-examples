@@ -42,7 +42,7 @@ services:
     image: squirrels-weather:latest
     restart: unless-stopped
     volumes:
-      - ./sqrl-weather-analytics/.env.local:/app/.env.local:ro
+      - ~/volumes/sqrl-weather-analytics/.env.local:/app/.env.local:ro
     logging:
       driver: "json-file"
       options:
@@ -58,7 +58,7 @@ services:
     image: squirrels-expenses:latest
     restart: unless-stopped
     volumes:
-      - ./sqrl-expenses/.env.local:/app/.env.local:ro
+      - ~/volumes/sqrl-expenses/.env.local:/app/.env.local:ro
     logging:
       driver: "json-file"
       options:

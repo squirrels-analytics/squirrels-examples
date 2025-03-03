@@ -1,0 +1,52 @@
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-local.conf:/etc/nginx/conf.d/default.conf:ro
+      - C:/nginx-certs:/etc/nginx/certs:ro
+    depends_on:
+      - squirrels-mortgage
+      - squirrels-weather
+      - squirrels-expenses
+    networks:
+      - squirrels-network
+
+  squirrels-mortgage:
+    build:
+      context: ./sqrl-mortgage-analysis
+      dockerfile: Dockerfile
+    image: squirrels-mortgage:latest
+    restart: unless-stopped
+    networks:
+      - squirrels-network
+
+  squirrels-weather:
+    build:
+      context: ./sqrl-weather-analytics
+      dockerfile: Dockerfile
+    image: squirrels-weather:latest
+    restart: unless-stopped
+    volumes:
+      - ./sqrl-weather-analytics/.env.local:/app/.env.local:ro
+    networks:
+      - squirrels-network
+
+  squirrels-expenses:
+    build:
+      context: ./sqrl-expenses
+      dockerfile: Dockerfile
+    image: squirrels-expenses:latest
+    restart: unless-stopped
+    volumes:
+      - ./sqrl-expenses/.env.local:/app/.env.local:ro
+    networks:
+      - squirrels-network
+
+networks:
+  squirrels-network:
+    driver: bridge

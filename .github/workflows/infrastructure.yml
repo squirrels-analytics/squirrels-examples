@@ -1,0 +1,43 @@
+name: Deploy Infrastructure
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'docker-compose.yml'
+      - 'nginx.conf'
+      - '.github/workflows/infrastructure.yml'
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Copy configuration files to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ vars.SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SQUIRRELS_SSH_KEY }}
+          source: "docker-compose.yml,nginx/"
+          target: .
+          strip_components: 0
+      
+      - name: Rebuild and deploy all services
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SQUIRRELS_SSH_KEY }}
+          script: |
+            # Rebuild all services since infrastructure changed
+            docker-compose build
+            
+            # Start all services
+            docker-compose up -d
+            
+            # Clean up unused images
+            docker image prune -f 

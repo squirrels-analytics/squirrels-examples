@@ -1,8 +1,6 @@
 FROM python:3.12-slim
-# Set working directory to match where we'll copy files
 WORKDIR /app
 
-# Copy everything from build context to container
 COPY . .
 
 # Verify the file exists after copying (this will show in build logs)
@@ -15,5 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 4465
 
-# Make sure we're in the right directory when running the command
-CMD ["sh", "-c", "ls -la && sqrl run --host 0.0.0.0 --port 4465"]
+CMD ["sqrl", "run", "--host", "0.0.0.0", "--port", "4465"]

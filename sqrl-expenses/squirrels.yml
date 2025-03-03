@@ -1,5 +1,5 @@
 project_variables:
-  name: sample
+  name: expenses
   label: Sample Project - Expenses
   description: This is a sample squirrels project for analyzing expense transactions
   major_version: 1
@@ -25,7 +25,7 @@ packages: []
 connections:
   - name: default
     type: sqlalchemy                      ## one of: sqlalchemy, connectorx, or adbc
-    uri: {{ env_vars.sqlite_uri }}        ## using Jinja to substitute environment variable from env.yml
+    uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variable from env.yml
 
 
 datasets:
@@ -78,21 +78,3 @@ selection_test_sets:
       role: manager
     parameters:
       group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"
-
-
-settings: {}
-
-## Default values for settings:
-#   auth.token.expire_minutes: 30
-#   parameters.cache.size: 1024
-#   parameters.cache.ttl_minutes: 60
-#   datasets.cache.size: 128
-#   datasets.cache.ttl_minutes: 60
-#   dashboards.cache.size: 128
-#   dashboards.cache.ttl_minutes: 60
-#   selection_test_sets.default_name_used: default
-#   connections.default_name_used: default
-#   defaults.federates.materialized: view
-#   seeds.infer_schema: True
-#   seeds.na_values: [NA]
-#   duckdb_venv.file_path: target/.venv.duckdb

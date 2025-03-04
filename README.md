@@ -70,13 +70,7 @@ To use a custom domain name like "subdomain.duckdns.org", you'll need to:
 dns_duckdns_token=<your-duckdns-token>
 ```
 
-2. For security, it is recommended to create a `dhparams.pem` file as such:
-
-```bash
-sudo openssl dhparam -out /etc/letsencrypt/dhparams.pem 2048
-```
-
-3. Run the following command to generate the certificates:
+2. Run the following command to generate the certificates:
 
 ```bash
 docker run -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/log/letsencrypt:/var/log/letsencrypt" -v "./duckdns.ini:/conf/duckdns.ini" infinityofspace/certbot_dns_duckdns:latest \
@@ -92,3 +86,9 @@ docker run -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/log/letsencrypt:/var/
 ```
 
 More info can be found here: https://pypi.org/project/certbot-dns-duckdns/
+
+3. For security, it is recommended to create a `dhparams.pem` file as such:
+
+```bash
+sudo openssl dhparam -out /etc/letsencrypt/dhparams.pem 2048
+```

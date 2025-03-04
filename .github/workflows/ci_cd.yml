@@ -25,8 +25,8 @@ jobs:
           host: ${{ vars.SQUIRRELS_HOST }}
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
-          source: .
-          target: ./app
+          source: "."
+          target: "./app"
           strip_components: 0
       
       - name: Rebuild and deploy all services

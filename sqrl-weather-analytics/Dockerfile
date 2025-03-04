@@ -3,11 +3,6 @@ WORKDIR /app
 
 COPY . .
 
-# Verify the file exists after copying (this will show in build logs)
-RUN ls -la && \
-    echo "Checking for squirrels.yml:" && \
-    ls -la squirrels.yml || echo "squirrels.yml not found!"
-
 RUN apt-get update && apt-get install -y git
 RUN pip install --no-cache-dir -r requirements.txt
 

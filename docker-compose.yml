@@ -27,6 +27,8 @@ services:
       dockerfile: Dockerfile
     image: squirrels-mortgage:latest
     restart: unless-stopped
+    volumes:
+      - ~/volumes/sqrl-mortgage-analysis/target:/app/target
     logging:
       driver: "json-file"
       options:
@@ -43,6 +45,7 @@ services:
     restart: unless-stopped
     volumes:
       - ~/volumes/sqrl-weather-analytics/.env.local:/app/.env.local:ro
+      - ~/volumes/sqrl-weather-analytics/target:/app/target
     logging:
       driver: "json-file"
       options:
@@ -59,6 +62,7 @@ services:
     restart: unless-stopped
     volumes:
       - ~/volumes/sqrl-expenses/.env.local:/app/.env.local:ro
+      - ~/volumes/sqrl-expenses/target:/app/target
     logging:
       driver: "json-file"
       options:

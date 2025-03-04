@@ -1,14 +1,15 @@
-name: Deploy Mortgage Analysis
+name: Deploy Infrastructure
 
 on:
   push:
     branches: [ dev ]
     paths:
-      - '!docker-compose.yml'
-      - '!nginx.conf'
-      - '!.github/workflows/infrastructure.yml'
+      - 'docker-compose.yml'
+      - 'nginx.conf'
+      - 'sqrl-expenses/**'
+      - 'sqrl-weather-analytics/**'
       - 'sqrl-mortgage-analysis/**'
-      - '.github/workflows/sqrl-mortgage-analysis.yml'
+      - '.github/workflows/ci_cd.yml'
     
 jobs:
   deploy:
@@ -18,17 +19,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Copy project files to server
+      - name: Copy full repository to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ vars.SQUIRRELS_HOST }}
           username: ec2-user
           key: ${{ secrets.SQUIRRELS_SSH_KEY }}
-          source: "sqrl-mortgage-analysis/"
+          source: .
           target: ./app
           strip_components: 0
       
-      - name: Build and deploy
+      - name: Rebuild and deploy all services
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ vars.SQUIRRELS_HOST }}
@@ -38,11 +39,11 @@ jobs:
             # Change to the app directory
             cd ./app
             
-            # Build only the changed project
-            docker-compose build squirrels-mortgage
+            # Rebuild all services since infrastructure changed
+            docker-compose build
             
             # Start all services
-            docker-compose up -d squirrels-mortgage
+            docker-compose up -d
             
             # Clean up unused images
-            docker image prune -f
+            docker image prune -f 

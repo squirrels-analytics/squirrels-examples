@@ -13,5 +13,3 @@ WHERE {{ date_and_amount_filters(ctx) }}
 GROUP BY {{ ctx.group_by_cols }}
 
 ORDER BY {{ ctx.order_by_cols }}
-
-{{ ctx.limit_clause }}

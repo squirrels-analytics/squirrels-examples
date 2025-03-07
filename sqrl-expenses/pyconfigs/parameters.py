@@ -17,23 +17,16 @@ def main(sqrl: ParametersArgs) -> None:
     """
 
     ## Example of creating SingleSelectParameter and specifying each option by code
-    user_attribute = "role"
+    user_attribute = "is_admin"
     group_by_options = [
-        po.SelectParameterOption("g0", "Transaction", columns=["date", "category", "subcategory", "description"], user_groups=["manager"]),
-        po.SelectParameterOption("g1", "Day", columns=["date"], aliases=["day"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("g4", "Month", columns=["month"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("g2", "Category", columns=["category"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("g3", "Subcategory", columns=["category", "subcategory"], user_groups=["manager", "employee"]),
+        po.SelectParameterOption("g0", "Transaction", columns=["date", "category", "subcategory", "description"], user_groups=[True]),
+        po.SelectParameterOption("g1", "Day", columns=["date"], aliases=["day"], user_groups=[True, False]),
+        po.SelectParameterOption("g4", "Month", columns=["month"], user_groups=[True, False]),
+        po.SelectParameterOption("g2", "Category", columns=["category"], user_groups=[True, False]),
+        po.SelectParameterOption("g3", "Subcategory", columns=["category", "subcategory"], user_groups=[True, False]),
     ]
     p.SingleSelectParameter.CreateWithOptions(
         "group_by", "Group By", group_by_options, description="Dimension(s) to aggregate by", user_attribute=user_attribute
-    )
-
-    ## Example of creating NumberParameter with options
-    parent = "group_by"
-    limit_options = [po.NumberParameterOption(0, 1000, increment=10, default_value=1000, parent_option_ids="g0")]
-    p.NumberParameter.CreateWithOptions(
-        "limit", "Max Number of Rows", limit_options, parent_name=parent, description="Maximum number of rows to return"
     )
 
     ## Example of creating DateParameter

@@ -1,7 +1,7 @@
 project_variables:
   name: expenses
-  label: Sample Project - Expenses
-  description: This is a sample squirrels project for analyzing expense transactions
+  label: Expense Analytics
+  description: This is a squirrels project for analyzing expense transactions
   major_version: 1
 
 
@@ -29,9 +29,9 @@ connections:
 
 
 datasets:
-  - name: dbview_dataset_example          ## model name uses same name unless "model" field is specified
-    label: Example Dataset from DBView Model
-    description: Aggregated expense transactions by month using dbview_example model
+  - name: expense_transactions          ## model name uses same name unless "model" field is specified
+    label: Expense Transactions
+    description: All expense transactions
     model: dbview_example 
     scope: public                         ## optional - one of 'public' (default), 'protected', or 'private'
     parameters:                           ## optional - if not specified, then all parameters are used
@@ -41,14 +41,13 @@ datasets:
       - max_filter
     traits: {}                            ## optional - defaults to empty object
   
-  - name: federate_dataset_example
-    label: Example Dataset from Federate Model
-    description: Aggregated expense transactions by custom dimension using federate_example model
+  - name: grouped_expenses
+    label: Grouped Expenses
+    description: Total expense amounts grouped by some attribute
     model: federate_example 
     scope: protected                      ## using an auth.py file is suggested for protected or private datasets
     parameters:
       - group_by
-      - limit
       - date_range
       - category
       - subcategory
@@ -59,22 +58,22 @@ datasets:
 selection_test_sets:
   - name: no_auth_test1
     datasets:                             ## optional section - if not provided, then test set is applicable for any dataset
-      - dbview_dataset_example
+      - expenses_by_month
     parameters:                           ## optional section - if not provided, then assumes no parameters. For unspecified parameters, default value is used
       start_date: 2023-07-01              ## this parameter only exists for dataset 'dataset_example'
   
   - name: auth_test1
     datasets:
-      - federate_dataset_example
+      - grouped_expenses
     user_attributes:                      ## optional section - required if using test set on non-public datasets
-      role: customer
+      role: employee
     parameters:
       date_range: [2023-02-01,2023-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
     
   - name: auth_test2
     user_attributes:
       username: alice                     ## optional - defaults to empty string
-      is_internal: True                   ## optional - defaults to False
+      is_admin: True                      ## optional - defaults to False
       role: manager
     parameters:
       group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"

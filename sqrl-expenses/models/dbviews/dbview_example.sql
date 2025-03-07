@@ -4,7 +4,7 @@ SELECT
     date,
     printf('%.2f', amount) as amount,
     CASE 
-        WHEN {{ user.is_admin }} THEN description
+        WHEN '{{ user.role }}' = 'manager' THEN description
         ELSE '***MASKED***'
     END as description
 

@@ -15,7 +15,7 @@ connections:
   ## First, run the following in your Motherduck account: ATTACH 'md:_share/squirrels_analytics_public_db/597bd9c2-72c8-49b9-8ed6-f3d4441fda24'
   - name: duckdb
     type: sqlalchemy
-    uri: {{ env_vars.motherduck_uri }}
+    uri: {{ env_vars.MOTHERDUCK_URI }}
 
 
 datasets:
@@ -55,6 +55,3 @@ selection_test_sets:
       - weather_trend
     parameters:
       trend_type: '1'
-
-
-settings: {}

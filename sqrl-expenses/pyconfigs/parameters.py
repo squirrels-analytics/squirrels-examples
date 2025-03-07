@@ -29,13 +29,6 @@ def main(sqrl: ParametersArgs) -> None:
         "group_by", "Group By", group_by_options, description="Dimension(s) to aggregate by", user_attribute=user_attribute
     )
 
-    ## Example of creating NumberParameter with options
-    parent = "group_by"
-    limit_options = [po.NumberParameterOption(0, 1000, increment=10, default_value=1000, parent_option_ids="g0")]
-    p.NumberParameter.CreateWithOptions(
-        "limit", "Max Number of Rows", limit_options, parent_name=parent, description="Maximum number of rows to return"
-    )
-
     ## Example of creating DateParameter
     start_date_source = ds.DateDataSource(
         "SELECT min(date) AS min_date, max(date) AS max_date FROM expenses",
@@ -46,14 +39,14 @@ def main(sqrl: ParametersArgs) -> None:
     )
 
     ## Example of creating DateParameter from list of DateParameterOption's
-    end_date_option = [po.DateParameterOption("2024-12-31", min_date="2000-01-01", max_date="2024-12-31")]
+    end_date_option = [po.DateParameterOption("2024-12-31", min_date="2024-01-01", max_date="2024-12-31")]
     p.DateParameter.CreateWithOptions(
         "end_date", "End Date", end_date_option, description="End date to filter transactions by"
     )
 
     ## Example of creating DateRangeParameter
     p.DateRangeParameter.CreateSimple(
-        "date_range", "Date Range", "2000-01-01", "2024-12-31", min_date="2000-01-01", max_date="2024-12-31",
+        "date_range", "Date Range", "2024-01-01", "2024-12-31", min_date="2024-01-01", max_date="2024-12-31",
         description="Date range to filter transactions by"
     )
 

@@ -37,7 +37,3 @@ datasets:
       - num_years
       - num_months
       - num_trials
-
-
-settings:
-  datasets.cache.ttl_minutes: 0

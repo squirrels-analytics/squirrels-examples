@@ -1,12 +1,15 @@
 {# SQLite dialect (based on connection used) #}
 
-SELECT STRFTIME('%Y-%m', date) AS month
-    , ROUND(SUM(amount), 2) as total_amount
+SELECT 
+    date,
+    printf('%.2f', amount) as amount,
+    CASE 
+        WHEN '{{ user.role }}' = 'manager' THEN description
+        ELSE '***MASKED***'
+    END as description
 
 FROM {{ source("src_transactions") }}
 
 WHERE {{ date_and_amount_filters(ctx) }}
 
-GROUP BY 1
-
-ORDER BY 1 DESC
+ORDER BY date

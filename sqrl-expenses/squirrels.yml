@@ -1,7 +1,7 @@
 project_variables:
-  name: sample
-  label: Sample Project - Expenses
-  description: This is a sample squirrels project for analyzing expense transactions
+  name: expenses
+  label: Expense Analytics
+  description: This is a squirrels project for analyzing expense transactions
   major_version: 1
 
 
@@ -25,74 +25,58 @@ packages: []
 connections:
   - name: default
     type: sqlalchemy                      ## one of: sqlalchemy, connectorx, or adbc
-    uri: {{ env_vars.sqlite_uri }}        ## using Jinja to substitute environment variable from env.yml
+    uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variable from env.yml
 
 
 datasets:
-  - name: dbview_dataset_example          ## model name uses same name unless "model" field is specified
-    label: Example Dataset from DBView Model
-    description: Aggregated expense transactions by month using dbview_example model
+  - name: expense_transactions            ## model name uses same name unless "model" field is specified
+    label: Expense Transactions
+    description: All expense transactions
     model: dbview_example 
-    scope: public                         ## optional - one of 'public' (default), 'protected', or 'private'
+    scope: protected                      ## optional - one of 'public' (default), 'protected', or 'private'
     parameters:                           ## optional - if not specified, then all parameters are used
       - start_date
       - end_date
       - min_filter
       - max_filter
     traits: {}                            ## optional - defaults to empty object
+    default_test_set: test0               ## optional - if not specified, uses setting from environment variable 'SQRL.TEST_SETS.DEFAULT_NAME_USED'
   
-  - name: federate_dataset_example
-    label: Example Dataset from Federate Model
-    description: Aggregated expense transactions by custom dimension using federate_example model
+  - name: grouped_expenses
+    label: Grouped Expenses
+    description: Total expense amounts grouped by some attribute
     model: federate_example 
-    scope: protected                      ## using an auth.py file is suggested for protected or private datasets
+    scope: protected
     parameters:
       - group_by
-      - limit
       - date_range
       - category
       - subcategory
       - between_filter
-    default_test_set: auth_test1          ## optional - if not specified, uses setting 'selection_test_sets.default_name_used'
+    default_test_set: test1
 
 
 selection_test_sets:
-  - name: no_auth_test1
+  - name: test0
     datasets:                             ## optional section - if not provided, then test set is applicable for any dataset
-      - dbview_dataset_example
-    parameters:                           ## optional section - if not provided, then assumes no parameters. For unspecified parameters, default value is used
-      start_date: 2023-07-01              ## this parameter only exists for dataset 'dataset_example'
-  
-  - name: auth_test1
-    datasets:
-      - federate_dataset_example
-    user_attributes:                      ## optional section - required if using test set on non-public datasets
-      role: customer
-    parameters:
-      date_range: [2023-02-01,2023-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
-    
-  - name: auth_test2
+      - expense_transactions
     user_attributes:
       username: alice                     ## optional - defaults to empty string
-      is_internal: True                   ## optional - defaults to False
+    parameters:                           ## optional section - if not provided, then assumes no parameters. For unspecified parameters, default value is used
+      start_date: 2024-07-01              ## this parameter only exists for dataset 'dataset_example'
+  
+  - name: test1
+    datasets:
+      - grouped_expenses
+    user_attributes:                      ## optional section - required if using test set on non-public datasets
+      role: employee
+    parameters:
+      date_range: [2024-02-01,2024-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
+    
+  - name: test2
+    user_attributes:
+      username: alice
+      is_admin: True                      ## optional - defaults to False
       role: manager
     parameters:
       group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"
-
-
-settings: {}
-
-## Default values for settings:
-#   auth.token.expire_minutes: 30
-#   parameters.cache.size: 1024
-#   parameters.cache.ttl_minutes: 60
-#   datasets.cache.size: 128
-#   datasets.cache.ttl_minutes: 60
-#   dashboards.cache.size: 128
-#   dashboards.cache.ttl_minutes: 60
-#   selection_test_sets.default_name_used: default
-#   connections.default_name_used: default
-#   defaults.federates.materialized: view
-#   seeds.infer_schema: True
-#   seeds.na_values: [NA]
-#   duckdb_venv.file_path: target/.venv.duckdb

@@ -24,14 +24,6 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
         ctx["group_by_cols_list"] = columns
         ctx["rename_dict"] = {old: new for old, new in zip(columns, aliases)}
     
-    if sqrl.param_exists("limit"):
-        limit_param = sqrl.prms["limit"]
-        assert isinstance(limit_param, p.NumberParameter)
-
-        ctx["limit_clause"] = f"LIMIT {limit_param.get_selected_value()}"
-    else:
-        ctx["limit_clause"] = ""
-
     if sqrl.param_exists("start_date"):
         start_date_param = sqrl.prms["start_date"]
         assert isinstance(start_date_param, p.DateParameter)

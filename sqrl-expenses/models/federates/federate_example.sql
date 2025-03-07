@@ -1,7 +1,7 @@
 {# DuckDB dialect #}
 
 SELECT {{ ctx.select_dim_cols }}
-    , ROUND(SUM(amount), 2) as total_amount
+    , CAST(SUM(amount) AS DECIMAL(15, 2)) as total_amount
 
 {# ref() can be used on a sources, seeds, builds, dbviews, or other federate models -#}
 FROM {{ ref("build_example") }} AS a
@@ -13,5 +13,3 @@ WHERE {{ date_and_amount_filters(ctx) }}
 GROUP BY {{ ctx.group_by_cols }}
 
 ORDER BY {{ ctx.order_by_cols }}
-
-{{ ctx.limit_clause }}

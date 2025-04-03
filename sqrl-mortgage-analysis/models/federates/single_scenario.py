@@ -9,7 +9,7 @@ def main(sqrl: ModelArgs) -> pl.DataFrame:
 
     start_date = sqrl.get_placeholder_value("start_date")
     total_num_months = sqrl.ctx["total_num_months"]
-    monthly_payment = sqrl.ctx["monthly_payment"]
+    monthly_payment = sqrl.ctx["mortgage_payment"]
 
     curr_month = datetime.strptime(start_date, "%Y-%m-%d")
     loan_amount = sqrl.ctx["loan_amount"]

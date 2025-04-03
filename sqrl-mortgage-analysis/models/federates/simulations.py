@@ -13,7 +13,7 @@ def main(sqrl: ModelArgs) -> pl.DataFrame:
         for stock_return in stock_returns:
             value_if_renew_mortgage *= (1 + stock_return)
             value_if_pay_down_house *= (1 + stock_return)
-            value_if_pay_down_house += sqrl.ctx["monthly_payment"]
+            value_if_pay_down_house += sqrl.ctx["mortgage_payment"]
         
         return value_if_renew_mortgage, value_if_pay_down_house
     

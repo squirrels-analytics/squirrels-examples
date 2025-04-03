@@ -43,7 +43,7 @@ columns:
 
   - name: category
     type: string
-    condition: parameter `group_by` (Group By) is `g0` (Transaction), `g2` (Category), or `g3` (Subcategory)
+    condition: parameter 'group_by' (Group By) is 'g0' (Transaction), 'g2' (Category), or 'g3' (Subcategory)
     description: The category for which the amount is aggregated by
     category: dimension
     depends_on:
@@ -51,7 +51,7 @@ columns:
   
   - name: subcategory
     type: string
-    condition: parameter `group_by` (Group By) is `g0` (Transaction) or `g3` (Subcategory)
+    condition: parameter 'group_by' (Group By) is 'g0' (Transaction) or 'g3' (Subcategory)
     description: The subcategory for which the amount is aggregated by
     category: dimension
     depends_on:

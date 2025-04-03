@@ -23,6 +23,7 @@ services:
     image: squirrels-mortgage:latest
     restart: unless-stopped
     volumes:
+      - ./sqrl-mortgage-analysis/.env:/app/.env:ro
       - ./sqrl-mortgage-analysis/target:/app/target
     networks:
       - squirrels-network
@@ -34,7 +35,7 @@ services:
     image: squirrels-weather:latest
     restart: unless-stopped
     volumes:
-      - ./sqrl-weather-analytics/.env.local:/app/.env.local:ro
+      - ./sqrl-weather-analytics/.env:/app/.env:ro
       - ./sqrl-weather-analytics/target:/app/target
     networks:
       - squirrels-network
@@ -46,7 +47,7 @@ services:
     image: squirrels-expenses:latest
     restart: unless-stopped
     volumes:
-      - ./sqrl-expenses/.env.local:/app/.env.local:ro
+      - ./sqrl-expenses/.env:/app/.env:ro
       - ./sqrl-expenses/target:/app/target
     networks:
       - squirrels-network

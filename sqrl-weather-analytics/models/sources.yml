@@ -2,6 +2,7 @@ sources:
   - name: src_weather
     connection: default
     table: weather
+    load_to_duckdb: false
 
     columns:
       - name: date
@@ -11,7 +12,7 @@ sources:
       
       - name: precipitation
         type: float
-        description: The amount of precipitation for the time period in cm
+        description: The amount of precipitation for the time period in centimeters
         category: measure
 
       - name: temp_max
@@ -38,6 +39,7 @@ sources:
   - name: src_ice_cream_profits
     connection: duckdb
     table: ice_cream_profits
+    load_to_duckdb: false
 
     columns:
       - name: date

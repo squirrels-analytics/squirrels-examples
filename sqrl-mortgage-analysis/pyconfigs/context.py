@@ -38,7 +38,7 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
 
     if sqrl.param_exists("mortgage_payment"):
         mortgage_payment_param: p.TextParameter = sqrl.prms["mortgage_payment"]
-        ctx["monthly_payment"] = mortgage_payment_param.get_entered_text().apply_as_number(float)
+        ctx["mortgage_payment"] = mortgage_payment_param.get_entered_text().apply_as_number(float)
     
     if sqrl.param_exists("num_trials"):
         num_trials_param: p.NumberParameter = sqrl.prms["num_trials"]

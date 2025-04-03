@@ -10,12 +10,12 @@ weather_by_date_with_period_starts AS (
     FROM {{ ref("dbv_weather_by_date") }}
 )
 SELECT 
-    '{{ ctx.period_type }}' AS period_type,
-    {{ ctx.dim_col }} AS reference_date,
+    '{{ ctx.trend_period_type }}' AS period_type,
+    {{ ctx.trend_dim_col }} AS reference_date,
     {{ get_metrics() }}
 
 FROM weather_by_date_with_period_starts
 
-GROUP BY {{ ctx.dim_col }}
+GROUP BY {{ ctx.trend_dim_col }}
 
-ORDER BY {{ ctx.dim_col }}
+ORDER BY {{ ctx.trend_dim_col }}

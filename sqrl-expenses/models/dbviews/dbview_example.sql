@@ -10,6 +10,6 @@ SELECT
 
 FROM {{ source("src_transactions") }}
 
-WHERE {{ date_and_amount_filters(ctx) }}
+WHERE {{ date_and_amount_filters(use2=false) }}
 
 ORDER BY date

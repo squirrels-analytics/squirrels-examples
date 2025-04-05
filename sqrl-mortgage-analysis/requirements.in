@@ -1,2 +1,2 @@
-squirrels @ git+https://github.com/squirrels-analytics/squirrels.git@a34b573e1ca67f758e6b21c012dd9e51076af5f7
+squirrels==0.5.0b1
 scipy

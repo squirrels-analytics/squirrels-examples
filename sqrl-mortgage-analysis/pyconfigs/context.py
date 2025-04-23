@@ -30,7 +30,7 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
     
     if sqrl.param_exists("start_date"):
         start_date_param: p.DateParameter = sqrl.prms["start_date"]
-        sqrl.set_placeholder("start_date", start_date_param.get_selected_date())
+        ctx["start_date"] = start_date_param.get_selected_date()
 
     if "loan_amount" in ctx and "applied_monthly_rate" in ctx and "total_num_months" in ctx:
         loan, rate, num_months = ctx["loan_amount"], ctx["applied_monthly_rate"], ctx["total_num_months"]

@@ -1,4 +1,4 @@
-{# SQLite dialect (based on connection used) #}
+{#- SQLite dialect (based on connection used) -#}
 
 SELECT 
     date,
@@ -10,6 +10,6 @@ SELECT
 
 FROM {{ source("src_transactions") }}
 
-WHERE {{ date_and_amount_filters(use2=false) }}
+WHERE {{ date_and_amount_filters(use_from_range=false) }}
 
 ORDER BY date

@@ -24,6 +24,7 @@ packages: []
 ##   adbc:       https://arrow.apache.org/adbc/ (see connectorx documentation for URI examples)
 connections:
   - name: default
+    label: SQLite Expenses Database
     type: sqlalchemy                      ## one of: sqlalchemy, connectorx, or adbc
     uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variable from env.yml
 
@@ -72,6 +73,8 @@ selection_test_sets:
       role: employee
     parameters:
       date_range: [2024-02-01,2024-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
+      group_by: month
+      category: ["2", "3"]
     
   - name: test2
     user_attributes:
@@ -79,4 +82,4 @@ selection_test_sets:
       is_admin: True                      ## optional - defaults to False
       role: manager
     parameters:
-      group_by: g3                        ## this parameter exists for all datasets. "g3" is the id for option "subcategory"
+      group_by: subcat                    ## this parameter exists for all datasets

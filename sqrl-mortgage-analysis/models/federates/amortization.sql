@@ -3,7 +3,7 @@ cte AS (
 
     SELECT
         0 AS month,
-        ($start_date::DATE - INTERVAL 1 MONTH) AS current_month,
+        ({{ ctx.start_date | quote }}::DATE - INTERVAL 1 MONTH) AS current_month,
         NULL::DOUBLE AS principal_start,
         NULL::DOUBLE AS payment,
         NULL::DOUBLE AS interest_payment,

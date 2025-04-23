@@ -9,6 +9,7 @@ packages: []
 
 connections:
   - name: default
+    label: SQLite Weather Database
     type: sqlalchemy
     uri: sqlite:///{project_path}/assets/weather.db
   

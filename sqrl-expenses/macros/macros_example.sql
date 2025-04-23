@@ -1,15 +1,17 @@
-{%- macro date_and_amount_filters(use2) -%}
-    
-    {%- if use2 -%}
-        date >= {{ ctx.start_date2 }}
-        AND date <= {{ ctx.end_date2 }}
-        AND amount >= {{ ctx.min_amount2 }}
-        AND amount <= {{ ctx.max_amount2 }}
-    {%- else -%}
-        date >= {{ ctx.start_date }}
-        AND date <= {{ ctx.end_date }}
-        AND amount >= {{ ctx.min_amount }}
-        AND amount <= {{ ctx.max_amount }}
-    {%- endif -%}
+{%- macro date_and_amount_filters(use_from_range) -%}
+    {%- if use_from_range -%}
 
+    date >= {{ ctx.start_date_from_range | quote }}
+    AND date <= {{ ctx.end_date_from_range | quote }}
+    AND amount >= {{ ctx.min_amount_from_range }}
+    AND amount <= {{ ctx.max_amount_from_range }}
+
+    {%- else -%}
+
+    date >= {{ ctx.start_date | quote }}
+    AND date <= {{ ctx.end_date | quote }}
+    AND amount >= {{ ctx.min_amount }}
+    AND amount <= {{ ctx.max_amount }}
+
+    {%- endif -%}
 {%- endmacro -%}

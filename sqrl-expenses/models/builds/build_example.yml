@@ -1,6 +1,8 @@
 description: |
   This is an example of a build model. It adds a new column called "month" to the source table "src_transactions".
 
+materialization: TABLE
+
 depends_on:
   - src_transactions
   - seed_categories

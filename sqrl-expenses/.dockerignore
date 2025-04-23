@@ -4,10 +4,12 @@
 .venv/
 
 # squirrels files to ignore
+.env
 .env.local
+duckdb_init.sql
+logs/
 target/
 sqrl_packages/
-logs/
 
 # additional files for docker to ignore
 Dockerfile

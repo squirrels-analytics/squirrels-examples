@@ -1,6 +1,8 @@
 description: |
   This model calculates the amortization of a mortgage over a given period of time.
 
+eager: true
+
 columns:
   - name: current_month
     type: date

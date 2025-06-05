@@ -1,0 +1,43 @@
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: nginx-mortgage
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - squirrels-mortgage
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"
+    networks:
+      - mortgage-network
+
+  squirrels-mortgage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: squirrels-mortgage:latest
+    container_name: squirrels-mortgage
+    restart: unless-stopped
+    volumes:
+      - ./.env:/app/.env:ro
+      - ./logs:/app/logs
+      - ./target:/app/target
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"
+    networks:
+      - mortgage-network
+
+networks:
+  mortgage-network:
+    driver: bridge 

@@ -1,5 +1,5 @@
 project_variables:
-  name: mortgage_analysis
+  name: mortgage
   label: Renew Mortgage vs Pay Off House
   description: This is a squirrels project for analyzing the net worth (at the end of the mortgage period) between renewing the mortgage and paying down the house.
   major_version: 1

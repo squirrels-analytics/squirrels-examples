@@ -27,9 +27,9 @@ services:
     container_name: squirrels-mortgage
     restart: unless-stopped
     volumes:
-      - ./.env:/app/.env:ro
-      - ./logs:/app/logs
-      - ./target:/app/target
+      - ~/volumes/sqrl-mortgage-analysis/.env:/app/.env:ro
+      - ~/volumes/sqrl-mortgage-analysis/logs:/app/logs
+      - ~/volumes/sqrl-mortgage-analysis/target:/app/target
     logging:
       driver: "json-file"
       options:

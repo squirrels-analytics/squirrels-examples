@@ -1,49 +1,44 @@
-name: Deploy Infrastructure
+name: Deploy Mortgage Analysis
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'docker-compose.yml'
-      - 'nginx.conf'
-      - 'sqrl-expenses/**'
-      - 'sqrl-weather-analytics/**'
       - 'sqrl-mortgage-analysis/**'
-      - '.github/workflows/ci_cd.yml'
     
 jobs:
-  deploy:
+  deploy-mortgage-analysis:
     runs-on: ubuntu-latest
     environment: prod
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Copy full repository to server
+      - name: Copy mortgage analysis service to server
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ vars.SQUIRRELS_HOST }}
+          host: ${{ vars.MORTGAGE_SQUIRRELS_HOST }}
           username: ec2-user
-          key: ${{ secrets.SQUIRRELS_SSH_KEY }}
-          source: "."
+          key: ${{ secrets.MORTGAGE_SQUIRRELS_SSH_KEY }}
+          source: "sqrl-mortgage-analysis/"
           target: "./app"
           strip_components: 0
       
-      - name: Rebuild and deploy all services
+      - name: Deploy mortgage analysis service
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ vars.SQUIRRELS_HOST }}
+          host: ${{ vars.MORTGAGE_SQUIRRELS_HOST }}
           username: ec2-user
-          key: ${{ secrets.SQUIRRELS_SSH_KEY }}
+          key: ${{ secrets.MORTGAGE_SQUIRRELS_SSH_KEY }}
           script: |
-            # Change to the app directory
-            cd ./app
+            # Change to the mortgage analysis directory
+            cd ./app/sqrl-mortgage-analysis
             
-            # Rebuild all services since infrastructure changed
+            # Rebuild the service using its local docker-compose.yml
             docker-compose build
             
-            # Start all services
+            # Start the service
             docker-compose up -d
             
-            # Clean up unused images
-            docker image prune -f 
+            # Clean up unused images and containers
+            docker system prune -f 

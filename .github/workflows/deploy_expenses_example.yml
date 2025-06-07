@@ -1,0 +1,44 @@
+name: Deploy Expenses Analytics
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'sqrl-expenses/**'
+    
+jobs:
+  deploy-expenses:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Copy expenses analytics service to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ vars.EXPENSES_SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EXPENSES_SQUIRRELS_SSH_KEY }}
+          source: "sqrl-expenses/"
+          target: "./app"
+          strip_components: 0
+      
+      - name: Deploy expenses analytics service
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.EXPENSES_SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EXPENSES_SQUIRRELS_SSH_KEY }}
+          script: |
+            # Change to the expenses analytics directory
+            cd ./app/sqrl-expenses
+            
+            # Rebuild the service using its local docker-compose.yml
+            docker-compose build
+            
+            # Start the service
+            docker-compose up -d
+            
+            # Clean up unused images and containers
+            docker system prune -f 

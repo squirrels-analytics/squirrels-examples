@@ -15,6 +15,7 @@ def main(sqrl: ParametersArgs) -> None:
     The factory methods available are:
     - CreateSimple, CreateWithOptions, CreateFromSource
     """
+    params = []
 
     ## Example of creating SingleSelectParameter and specifying each option by code
     user_attribute = "role"
@@ -30,62 +31,64 @@ def main(sqrl: ParametersArgs) -> None:
         po.SelectParameterOption("cat", "Category", columns=["category"], user_groups=["manager", "employee"]),
         po.SelectParameterOption("subcat", "Subcategory", columns=["category", "subcategory"], user_groups=["manager", "employee"]),
     ]
-    p.SingleSelectParameter.CreateWithOptions(
+    params.append(p.SingleSelectParameter.CreateWithOptions(
         "group_by", "Group By", group_by_options, description="Dimension(s) to aggregate by", user_attribute=user_attribute
-    )
+    ))
 
     ## Example of creating DateParameter
     start_date_source = ds.DateDataSource(
         "SELECT min(date) AS min_date, max(date) AS max_date FROM expenses",
         default_date_col="min_date", min_date_col="min_date", max_date_col="max_date"
     )
-    p.DateParameter.CreateFromSource(
+    params.append(p.DateParameter.CreateFromSource(
         "start_date", "Start Date", start_date_source, description="Start date to filter transactions by"
-    )
+    ))
 
     ## Example of creating DateParameter from list of DateParameterOption's
     end_date_option = [po.DateParameterOption("2024-12-31", min_date="2024-01-01", max_date="2024-12-31")]
-    p.DateParameter.CreateWithOptions(
+    params.append(p.DateParameter.CreateWithOptions(
         "end_date", "End Date", end_date_option, description="End date to filter transactions by"
-    )
+    ))
 
     ## Example of creating DateRangeParameter
-    p.DateRangeParameter.CreateSimple(
+    params.append(p.DateRangeParameter.CreateSimple(
         "date_range", "Date Range", "2024-01-01", "2024-12-31", min_date="2024-01-01", max_date="2024-12-31",
         description="Date range to filter transactions by"
-    )
+    ))
 
     ## Example of creating MultiSelectParameter from lookup query/table
     category_ds = ds.SelectDataSource("seed_categories", "category_id", "category", from_seeds=True)
-    p.MultiSelectParameter.CreateFromSource(
+    params.append(p.MultiSelectParameter.CreateFromSource(
         "category", "Category Filter", category_ds, description="The expense categories to filter transactions by"
-    )
+    ))
 
     ## Example of creating MultiSelectParameter with parent from lookup query/table
     parent_name = "category"
     subcategory_ds = ds.SelectDataSource(
         "seed_subcategories", "subcategory_id", "subcategory", from_seeds=True, parent_id_col="category_id"
     )
-    p.MultiSelectParameter.CreateFromSource(
+    params.append(p.MultiSelectParameter.CreateFromSource(
         "subcategory", "Subcategory Filter", subcategory_ds, parent_name=parent_name,
         description="The expense subcategories to filter transactions by (available options are based on selected value(s) of 'Category Filter')"
-    )
+    ))
 
     ## Example of creating NumberParameter
-    p.NumberParameter.CreateSimple(
+    params.append(p.NumberParameter.CreateSimple(
         "min_filter", "Amounts Greater Than", min_value=0, max_value=300, increment=10,
         description="Number to filter on transactions with an amount greater than this value"
-    )
+    ))
     
     ## Example of creating NumberParameter from lookup query/table
     query = "SELECT 0 as min_value, 300 as max_value, 10 as increment"
     max_amount_ds = ds.NumberDataSource(query, "min_value", "max_value", increment_col="increment", default_value_col="max_value")
-    p.NumberParameter.CreateFromSource(
+    params.append(p.NumberParameter.CreateFromSource(
         "max_filter", "Amounts Less Than", max_amount_ds, description="Number to filter on transactions with an amount less than this value"
-    )
+    ))
 
     ## Example of creating NumberRangeParameter
-    p.NumberRangeParameter.CreateSimple(
+    params.append(p.NumberRangeParameter.CreateSimple(
         "between_filter", "Amounts Between", 0, 300, default_lower_value=0, default_upper_value=300,
         description="Number range to filter on transactions with an amount within this range"
-    )
+    ))
+
+    return params

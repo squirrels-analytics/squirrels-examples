@@ -65,9 +65,10 @@ Suppose the project name and version is "mortgage/v1". You can navigate to the A
 
 ### EC2 Instance Setup
 
-First, install Docker and Docker Compose:
+First, install Docker, Docker Compose, and Crontab:
 - https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html
 - https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
+- https://jainsaket-1994.medium.com/installing-crontab-on-amazon-linux-2023-ec2-98cf2708b171
 
 Next, clone the repo and copy the .env file to the project subfolder:
 - <project-subfolder>/.env → ~/squirrels-examples/<project-subfolder>/.env

@@ -2,7 +2,7 @@ name: Deploy Expenses Analytics
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
     paths:
       - 'sqrl-expenses/**'
     

@@ -2,7 +2,7 @@ name: Deploy Mortgage Analysis
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
     paths:
       - 'sqrl-mortgage-analysis/**'
     

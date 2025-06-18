@@ -1,0 +1,44 @@
+name: Deploy Mortgage Analysis
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'sqrl-mortgage-analysis/**'
+    
+jobs:
+  deploy-mortgage-analysis:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Copy mortgage analysis service to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ vars.MORTGAGE_SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.MORTGAGE_SQUIRRELS_SSH_KEY }}
+          source: "sqrl-mortgage-analysis/"
+          target: "./app"
+          strip_components: 0
+      
+      - name: Deploy mortgage analysis service
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.MORTGAGE_SQUIRRELS_HOST }}
+          username: ec2-user
+          key: ${{ secrets.MORTGAGE_SQUIRRELS_SSH_KEY }}
+          script: |
+            # Change to the mortgage analysis directory
+            cd ./app/sqrl-mortgage-analysis
+            
+            # Rebuild the service using its local docker-compose.yml
+            docker-compose build
+            
+            # Start the service
+            docker-compose up -d
+            
+            # Clean up unused images and containers
+            docker system prune -f 

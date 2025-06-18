@@ -24,6 +24,13 @@ Go into any example / subfolder (which all should contain a `squirrels.yml` file
 sqrl run
 ```
 
+The following project folders support deployment with Docker:
+- sqrl-mortgage-analysis
+
+The following project folders will support deployment with Docker soon:
+- sqrl-expenses
+- sqrl-weather-analytics
+
 ### Testing with Docker on a Local Machine
 
 First, create a directory for your certificates: 
@@ -41,6 +48,8 @@ docker run --rm -v C:/nginx-certs:/certs alpine/openssl req -x509 -nodes -days 3
 Now you can run locally with:
 
 ```bash
+cd <project-folder>
+docker-compose -f docker-compose-local.yml build
 docker-compose -f docker-compose-local.yml up -d
 ```
 
@@ -52,19 +61,21 @@ When you first navigate to https://localhost in your browser, you'll get a secur
     - Navigate to "Trusted Root Certification Authorities" → "Certificates"
     - Right-click → "All Tasks" → "Import" and follow the wizard
 
+Suppose the project name and version is "mortgage/v1". You can navigate to the API docs at "https://localhost/api/squirrels-v0/project/mortgage/v1/docs".
+
 ### EC2 Instance Setup
 
-First, install Docker and Docker Compose:
+First, install Docker, Docker Compose, and Crontab:
 - https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html
 - https://stackoverflow.com/questions/63708035/installing-docker-compose-on-amazon-ec2-linux-2-9kb-docker-compose-file
+- https://jainsaket-1994.medium.com/installing-crontab-on-amazon-linux-2023-ec2-98cf2708b171
 
-Next, copy the following volume files:
-- sqrl-weather-analytics/.env.local → ~/volumes/sqrl-weather-analytics/.env.local
-- sqrl-expenses/.env.local → ~/volumes/sqrl-expenses/.env.local
+Next, clone the repo and copy the .env file to the project subfolder:
+- <project-subfolder>/.env → ~/squirrels-examples/<project-subfolder>/.env
 
 To use a custom domain name like "subdomain.duckdns.org", you'll need to:
 
-1. Create a `duckdns.ini` file in the root directory with the following content:
+1. Create a `duckdns.ini` file in the home directory with the following content:
 
 ```
 dns_duckdns_token=<your-duckdns-token>
@@ -92,3 +103,13 @@ More info can be found here: https://pypi.org/project/certbot-dns-duckdns/
 ```bash
 sudo openssl dhparam -out /etc/letsencrypt/dhparams.pem 2048
 ```
+
+4. Create a cron job to renew the certificates:
+
+Write the following contents to the `/etc/crontab` file:
+
+```bash
+24 2 * * * touch /home/ec2-user/cron.start; docker run --rm -v "/etc/letsencrypt:/etc/letsencrypt" -v "/var/log/letsencrypt:/var/log/letsencrypt" -v "/home/ec2-user/duckdns.ini:/conf/duckdns.ini" infinityofspace/certbot_dns_duckdns:latest  renew; touch /home/ec2-user/cron.end
+```
+
+The `cron.start` and `cron.end` files can be used to check if the cron job ran successfully.

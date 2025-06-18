@@ -1,0 +1,43 @@
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: nginx-expenses
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - squirrels-expenses
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"
+    networks:
+      - expenses-network
+
+  squirrels-expenses:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: squirrels-expenses:latest
+    container_name: squirrels-expenses
+    restart: unless-stopped
+    volumes:
+      - ~/volumes/sqrl-expenses/.env:/app/.env:ro
+      - ~/volumes/sqrl-expenses/logs:/app/logs
+      - ~/volumes/sqrl-expenses/target:/app/target
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "100k"
+    networks:
+      - expenses-network
+
+networks:
+  expenses-network:
+    driver: bridge 

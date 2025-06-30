@@ -58,7 +58,7 @@ smmap==5.0.2
 sniffio==1.3.1
 SQLAlchemy==2.0.41
 sqlglot==26.25.3
-squirrels @ git+https://github.com/squirrels-analytics/squirrels.git@e83f6baa75d8c9ffe274a300e3a9d0dbe7833b76
+squirrels @ git+https://github.com/squirrels-analytics/squirrels.git@867db734b0bd7c3115cb44bc397b372b966435b7
 sse-starlette==2.3.6
 starlette==0.46.2
 typing-inspection==0.4.1

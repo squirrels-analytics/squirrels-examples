@@ -1,0 +1,13 @@
+[project]
+name = "sqrl-mortgage-analysis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "scipy>=1.16.1",
+    "squirrels",
+]
+
+[tool.uv.sources]
+squirrels = { git = "https://github.com/squirrels-analytics/squirrels.git", rev = "main" }

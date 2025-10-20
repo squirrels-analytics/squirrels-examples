@@ -7,7 +7,7 @@ import polars as pl
 def main(sqrl: ModelArgs) -> pl.DataFrame:
     df_snp = sqrl.ref("seed_snp500")
 
-    start_date = sqrl.get_placeholder_value("start_date")
+    start_date = sqrl.ctx["start_date"]
     total_num_months = sqrl.ctx["total_num_months"]
     monthly_payment = sqrl.ctx["mortgage_payment"]
 

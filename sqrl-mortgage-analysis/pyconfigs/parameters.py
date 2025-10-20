@@ -1,4 +1,4 @@
-from squirrels import ParametersArgs, parameters as p, parameter_options as po
+from squirrels import parameters as p, parameter_options as po
 
 
 # Loan Amount Parameter

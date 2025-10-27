@@ -1,94 +1,141 @@
-from squirrels import ParametersArgs, parameters as p, parameter_options as po, data_sources as ds
+from squirrels import parameters as p, parameter_options as po, data_sources as ds
 
 
-def main(sqrl: ParametersArgs) -> None:
-    """
-    Create all widget parameters in this file. If two or more datasets use a different set of parameters, define them all
-    here, and specify the subset of parameters used for each dataset in the "squirrels.yml" file.
-
-    Parameters are created by a factory method associated to the parameter class. For example, "CreateWithOptions" is the factory method used here:
-    > p.SingleSelectParameter.CreateWithOptions(...)
-
-    The parameter classes available are:
-    - SingleSelectParameter, MultiSelectParameter, DateParameter, DateRangeParameter, NumberParameter, NumberRangeParameter, TextParameter
-    
-    The factory methods available are:
-    - CreateSimple, CreateWithOptions, CreateFromSource
-    """
-    params = []
-
-    ## Example of creating SingleSelectParameter and specifying each option by code
-    user_attribute = "role"
-    group_by_options = [
+## Example of creating SingleSelectParameter and specifying each option by code
+@p.SingleSelectParameter.create_with_options(
+    name="group_by", label="Group By", 
+    description="Dimension(s) to aggregate by", 
+    user_attribute="access_level"
+)
+def group_by_options():
+    return [
         po.SelectParameterOption(
-            "trans", "Transaction", 
-            columns=["id", "date", "category", "subcategory", "description"], 
-            aliases=["_id", "date", "category", "subcategory", "description"], 
-            user_groups=["manager"]
+            id="trans", label="Transaction",  
+            columns=["id","date","category","subcategory","description"],
+            aliases=["_id","date","category","subcategory","description"], # in context.py, any alias starting with "_" will not be selected
+            user_groups=["admin"]
         ),
-        po.SelectParameterOption("day", "Day", columns=["date"], aliases=["day"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("month", "Month", columns=["month"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("cat", "Category", columns=["category"], user_groups=["manager", "employee"]),
-        po.SelectParameterOption("subcat", "Subcategory", columns=["category", "subcategory"], user_groups=["manager", "employee"]),
+        po.SelectParameterOption(
+            id="day", label="Day", 
+            columns=["date"], 
+            aliases=["day"], 
+            user_groups=["admin","member"]
+        ),
+        po.SelectParameterOption(
+            id="month", label="Month", 
+            columns=["month"], 
+            user_groups=["admin","member","guest"]
+        ),
+        po.SelectParameterOption(
+            id="cat", label="Category", 
+            columns=["category"], 
+            user_groups=["admin","member","guest"]
+        ),
+        po.SelectParameterOption(
+            id="subcat", label="Subcategory", 
+            columns=["category","subcategory"], 
+            user_groups=["admin","member","guest"]
+        ),
     ]
-    params.append(p.SingleSelectParameter.CreateWithOptions(
-        "group_by", "Group By", group_by_options, description="Dimension(s) to aggregate by", user_attribute=user_attribute
-    ))
 
-    ## Example of creating DateParameter
-    start_date_source = ds.DateDataSource(
-        "SELECT min(date) AS min_date, max(date) AS max_date FROM expenses",
-        default_date_col="min_date", min_date_col="min_date", max_date_col="max_date"
+
+## Example of creating DateParameter
+@p.DateParameter.create_from_source(
+    name="start_date", label="Start Date", 
+    description="Start date to filter transactions by"
+)
+def start_date_source():
+    return ds.DateDataSource(
+        table_or_query="SELECT min(date) AS min_date, max(date) AS max_date FROM expenses",
+        default_date_col="min_date", 
+        min_date_col="min_date", max_date_col="max_date",
     )
-    params.append(p.DateParameter.CreateFromSource(
-        "start_date", "Start Date", start_date_source, description="Start date to filter transactions by"
-    ))
 
-    ## Example of creating DateParameter from list of DateParameterOption's
-    end_date_option = [po.DateParameterOption("2024-12-31", min_date="2024-01-01", max_date="2024-12-31")]
-    params.append(p.DateParameter.CreateWithOptions(
-        "end_date", "End Date", end_date_option, description="End date to filter transactions by"
-    ))
 
-    ## Example of creating DateRangeParameter
-    params.append(p.DateRangeParameter.CreateSimple(
-        "date_range", "Date Range", "2024-01-01", "2024-12-31", min_date="2024-01-01", max_date="2024-12-31",
-        description="Date range to filter transactions by"
-    ))
+## Example of creating DateParameter from list of DateParameterOption's
+@p.DateParameter.create_with_options(
+    name="end_date", label="End Date", 
+    description="End date to filter transactions by"
+)
+def end_date_options():
+    return [
+        po.DateParameterOption(
+            default_date="2024-12-31", min_date="2024-01-01", max_date="2024-12-31"
+        )
+    ]
 
-    ## Example of creating MultiSelectParameter from lookup query/table
-    category_ds = ds.SelectDataSource("seed_categories", "category_id", "category", from_seeds=True)
-    params.append(p.MultiSelectParameter.CreateFromSource(
-        "category", "Category Filter", category_ds, description="The expense categories to filter transactions by"
-    ))
 
-    ## Example of creating MultiSelectParameter with parent from lookup query/table
-    parent_name = "category"
-    subcategory_ds = ds.SelectDataSource(
-        "seed_subcategories", "subcategory_id", "subcategory", from_seeds=True, parent_id_col="category_id"
+## Example of creating DateRangeParameter
+@p.DateRangeParameter.create_simple(
+    name="date_range", label="Date Range", 
+    default_start_date="2024-01-01", default_end_date="2024-12-31", 
+    min_date="2024-01-01", max_date="2024-12-31",
+    description="Date range to filter transactions by"
+)
+def date_range_options():
+    pass
+
+
+## Example of creating MultiSelectParameter from lookup query/table
+@p.MultiSelectParameter.create_from_source(
+    name="category", label="Category Filter", 
+    description="The expense categories to filter transactions by"
+)
+def category_source():
+    return ds.SelectDataSource(
+        table_or_query="seed_categories", 
+        id_col="category_id", 
+        options_col="category", 
+        source=ds.SourceEnum.SEEDS
     )
-    params.append(p.MultiSelectParameter.CreateFromSource(
-        "subcategory", "Subcategory Filter", subcategory_ds, parent_name=parent_name,
-        description="The expense subcategories to filter transactions by (available options are based on selected value(s) of 'Category Filter')"
-    ))
 
-    ## Example of creating NumberParameter
-    params.append(p.NumberParameter.CreateSimple(
-        "min_filter", "Amounts Greater Than", min_value=0, max_value=300, increment=10,
-        description="Number to filter on transactions with an amount greater than this value"
-    ))
-    
-    ## Example of creating NumberParameter from lookup query/table
-    query = "SELECT 0 as min_value, 300 as max_value, 10 as increment"
-    max_amount_ds = ds.NumberDataSource(query, "min_value", "max_value", increment_col="increment", default_value_col="max_value")
-    params.append(p.NumberParameter.CreateFromSource(
-        "max_filter", "Amounts Less Than", max_amount_ds, description="Number to filter on transactions with an amount less than this value"
-    ))
 
-    ## Example of creating NumberRangeParameter
-    params.append(p.NumberRangeParameter.CreateSimple(
-        "between_filter", "Amounts Between", 0, 300, default_lower_value=0, default_upper_value=300,
-        description="Number range to filter on transactions with an amount within this range"
-    ))
+## Example of creating MultiSelectParameter with parent from lookup query/table
+@p.MultiSelectParameter.create_from_source(
+    name="subcategory", label="Subcategory Filter",
+    description="The expense subcategories to filter transactions by (available options are based on selected value(s) of 'Category Filter')", 
+    parent_name="category"
+)
+def subcategory_source():
+    return ds.SelectDataSource(
+        table_or_query="seed_subcategories", 
+        id_col="subcategory_id", 
+        options_col="subcategory", 
+        source=ds.SourceEnum.SEEDS, 
+        parent_id_col="category_id"
+    )
 
-    return params
+
+## Example of creating NumberParameter
+@p.NumberParameter.create_simple(
+    name="min_filter", label="Amounts Greater Than", 
+    min_value=0, max_value=300, increment=10,
+    description="Number to filter on transactions with an amount greater than this value"
+)
+def min_filter_options():
+    pass
+
+
+## Example of creating NumberParameter from lookup query/table
+@p.NumberParameter.create_from_source(
+    name="max_filter", label="Amounts Less Than",
+    description="Number to filter on transactions with an amount less than this value"
+)
+def max_filter_source():
+    return ds.NumberDataSource(
+        table_or_query="SELECT 0 as min_value, 300 as max_value, 10 as increment",
+        min_value_col="min_value", max_value_col="max_value", 
+        increment_col="increment", 
+        default_value_col="max_value"
+    )
+
+
+## Example of creating NumberRangeParameter
+@p.NumberRangeParameter.create_simple(
+    name="between_filter", label="Amounts Between", 
+    min_value=0, max_value=300, 
+    default_lower_value=0, default_upper_value=300,
+    description="Number range to filter on transactions with an amount within this range"
+)
+def between_filter_options():
+    pass

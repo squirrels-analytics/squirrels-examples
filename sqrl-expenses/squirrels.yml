@@ -1,7 +1,7 @@
 project_variables:
-  name: expenses
-  label: Expense Analytics
-  description: This is a squirrels project for analyzing expense transactions
+  name: sample_expenses
+  label: "Sample Expenses"
+  description: This is a sample squirrels project for analyzing expense transactions
   major_version: 1
 
 
@@ -16,8 +16,9 @@ packages: []
 
 ## Connection URIs are usually in format "dialect://username:password@host:port/database" for database connections
 ## However, subtle differences exist depending on the "type" specified. For example, sqlite URIs are slightly different.
-##   sqlalchemy:      sqlite:///relative/path/to/database.db
-##   connectorx/adbc: sqlite://relative/path/to/database.db  (adbc URI format matches connectorx thanks to polars integration)
+##   sqlalchemy:      sqlite:///{project_path}/relative/path/to/database.db
+##   connectorx/adbc: sqlite://{project_path}/relative/path/to/database.db  (adbc URI format matches connectorx)
+##   duckdb:          sqlite:{project_path}/relative/path/to/database.db
 ## Refer to specific documentation for supported databases by type (with URI examples):
 ##   sqlalchemy: https://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls
 ##   connectorx: https://sfu-db.github.io/connector-x/databases.html
@@ -25,61 +26,46 @@ packages: []
 connections:
   - name: default
     label: SQLite Expenses Database
-    type: sqlalchemy                      ## one of: sqlalchemy, connectorx, or adbc
-    uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variable from env.yml
+    type: sqlalchemy                      ## one of: sqlalchemy, connectorx, adbc, or duckdb
+    uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variables
 
 
 datasets:
-  - name: expense_transactions            ## model name uses same name unless "model" field is specified
-    label: Expense Transactions
+  - name: expense_transactions           ## model name uses same name unless "model" field is specified
+    label: Expense Transactions - DBView Example
     description: All expense transactions
     model: dbview_example 
-    scope: protected                      ## optional - one of 'public' (default), 'protected', or 'private'
+    scope: private                        ## optional - one of 'public' (default), 'protected', or 'private'
     parameters:                           ## optional - if not specified, then all parameters are used
       - start_date
       - end_date
       - min_filter
       - max_filter
-    traits: {}                            ## optional - defaults to empty object
-    default_test_set: test0               ## optional - if not specified, uses setting from environment variable 'SQRL.TEST_SETS.DEFAULT_NAME_USED'
   
   - name: grouped_expenses
-    label: Grouped Expenses
-    description: Total expense amounts grouped by some attribute
+    label: Grouped Expenses - Federate Example
+    description: Aggregated expense transactions by custom dimension using federate_example model
     model: federate_example 
-    scope: protected
+    scope: public                         ## using an auth.py file is suggested for protected or private datasets
     parameters:
       - group_by
       - date_range
       - category
       - subcategory
       - between_filter
-    default_test_set: test1
 
 
 selection_test_sets:
-  - name: test0
-    datasets:                             ## optional section - if not provided, then test set is applicable for any dataset
-      - expense_transactions
-    user_attributes:
-      username: alice                     ## optional - defaults to empty string
-    parameters:                           ## optional section - if not provided, then assumes no parameters. For unspecified parameters, default value is used
-      start_date: 2024-07-01              ## this parameter only exists for dataset 'dataset_example'
+  - name: set_start_date
+    parameters:                           ## optional section - if not provided, then default value is used for all parameters
+      start_date: 2024-07-01              ## this parameter is only used by model "dbview_example"
   
-  - name: test1
-    datasets:
-      - grouped_expenses
-    user_attributes:                      ## optional section - required if using test set on non-public datasets
-      role: employee
+  - name: set_date_range
     parameters:
-      date_range: [2024-02-01,2024-12-01] ## this parameter only exists for dataset 'protected_dataset_example'
-      group_by: month
-      category: ["2", "3"]
+      date_range: [2024-02-01,2024-11-30] ## this parameter is only used by model "federate_example"
     
-  - name: test2
-    user_attributes:
-      username: alice
-      is_admin: True                      ## optional - defaults to False
-      role: manager
+  - name: use_admin_privileged_group_by
+    user:
+      access_level: admin
     parameters:
-      group_by: subcat                    ## this parameter exists for all datasets
+      group_by: trans

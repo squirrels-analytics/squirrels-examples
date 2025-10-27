@@ -2,7 +2,7 @@ sources:
   - name: src_weather
     connection: default
     table: weather
-    load_to_duckdb: false
+    load_to_vdl: false
 
     columns:
       - name: date

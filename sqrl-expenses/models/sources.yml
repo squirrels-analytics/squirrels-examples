@@ -1,17 +1,17 @@
 sources:
   - name: src_transactions
+    description: "The source table for transactions"  # optional
     connection: default           # optional - if not provided, will use the connection named "default" or the default connection specified in settings
     table: expenses               # optional - if not provided, will use the "name" field of the source
-    load_to_duckdb: true
+    load_to_vdl: true             # optional - default is false - other than dbview models (with translate_to_duckdb set to false), other models can only reference this source if load_to_vdl is true or connection type is duckdb
 
-    # For performance reasons, avoid specifying primary_key for large tables if upserts are not required
-    primary_key: [id]             # optional - if not provided, then this is an insert-only table for incremental loads - otherwise, this is an upsert table
-    
     update_hints:
       increasing_column: date     # optional - if not provided, will always do full refresh, otherwise uses this column for incremental loads
-      strictly_increasing: false  # optional - default is true - if false, then maximum value of column is removed before incremental loads
+      strictly_increasing: false  # optional - default is true - if false, then maximum value of column is removed before incremental load is performed
 
-    columns:
+    primary_key: [id]             # optional - if not provided, then this is an insert-only table for incremental loads
+    
+    columns:                      # optional - if load_to_vdl is true, then only the columns listed here are loaded to the Virtual Data Lake (VDL)
       - name: id
         type: string
         description: The unique identifier for the transaction

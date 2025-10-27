@@ -1,0 +1,8 @@
+[project]
+name = "sqrl-expenses-slim"
+version = "0.1.0"
+description = "Minimal working example of a Squirrels project"
+requires-python = ">=3.12"
+dependencies = [
+    "squirrels>=0.5.0",
+]

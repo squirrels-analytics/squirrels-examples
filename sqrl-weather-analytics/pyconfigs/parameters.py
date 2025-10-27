@@ -1,7 +1,8 @@
 from squirrels import ParametersArgs, parameters as p, parameter_options as po
 
 
-def main(sqrl: ParametersArgs) -> None:
+def main(sqrl: ParametersArgs):
+    parameters = []
 
     ## Group by
     group_by_options = [
@@ -11,7 +12,7 @@ def main(sqrl: ParametersArgs) -> None:
         po.SelectParameterOption("3", "Day of Year", dim_col="day_of_year"),
         po.SelectParameterOption("4", "Condition", dim_col="condition")
     ]
-    p.SingleSelectParameter.CreateSimple("group_by_dim", "Group By", group_by_options)
+    parameters.append(p.SingleSelectParameter.CreateSimple("group_by_dim", "Group By", group_by_options))
 
     ## Trend type
     trend_type_options = [
@@ -20,7 +21,9 @@ def main(sqrl: ParametersArgs) -> None:
         po.SelectParameterOption("2", "Weather Over Months", dim_col="start_of_month", period_type="month_of"),
         po.SelectParameterOption("3", "Weather Over Weeks", dim_col="start_of_week", period_type="week_of")
     ]
-    p.SingleSelectParameter.CreateSimple("trend_type", "Trend Type", trend_type_options)
+    parameters.append(p.SingleSelectParameter.CreateSimple("trend_type", "Trend Type", trend_type_options))
 
     ## Date filter
-    p.DateRangeParameter.CreateSimple("date_filter", "Date Range", default_start_date="2012-01-01", default_end_date="2015-12-31")
+    parameters.append(p.DateRangeParameter.CreateSimple("date_filter", "Date Range", default_start_date="2012-01-01", default_end_date="2015-12-31"))
+
+    return parameters

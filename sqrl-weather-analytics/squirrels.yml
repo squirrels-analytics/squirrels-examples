@@ -39,20 +39,14 @@ datasets:
 
 selection_test_sets:
   - name: group_by_month
-    datasets:
-      - weather_by_time
     parameters:
       group_by_dim: '2'
   
   - name: trend_over_months
-    datasets:
-      - weather_trend
     parameters:
       trend_type: '2'
       date_filter: ['2014-01-01','2015-06-30']
   
   - name: trend_over_quarters
-    datasets:
-      - weather_trend
     parameters:
       trend_type: '1'

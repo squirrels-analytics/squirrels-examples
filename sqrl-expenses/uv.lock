@@ -815,15 +815,6 @@ wheels = [
 ]
 
 [[package]]
-name = "networkx"
-version = "3.5"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6c/4f/ccdb8ad3a38e583f214547fd2f7ff1fc160c43a75af88e6aec213404b96a/networkx-3.5.tar.gz", hash = "sha256:d4c6f9cf81f52d69230866796b82afbccdec3db7ae4fbd1b65ea750feed50037", size = 2471065, upload-time = "2025-05-29T11:35:07.804Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/eb/8d/776adee7bbf76365fdd7f2552710282c79a4ead5d2a46408c9043a2b70ba/networkx-3.5-py3-none-any.whl", hash = "sha256:0030d386a9a06dee3565298b4a734b68589749a544acbb6c412dc9e2489ec6ec", size = 2034406, upload-time = "2025-05-29T11:35:04.961Z" },
-]
-
-[[package]]
 name = "numpy"
 version = "2.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -1407,12 +1398,12 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "squirrels", git = "https://github.com/squirrels-analytics/squirrels.git?rev=main" }]
+requires-dist = [{ name = "squirrels", specifier = ">=0.5.0" }]
 
 [[package]]
 name = "squirrels"
-version = "0.5.0b5"
-source = { git = "https://github.com/squirrels-analytics/squirrels.git?rev=main#83700fdb6306fc9bc038e440b83675587978526e" }
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "authlib" },
     { name = "bcrypt" },
@@ -1426,7 +1417,6 @@ dependencies = [
     { name = "libpass" },
     { name = "matplotlib" },
     { name = "mcp" },
-    { name = "networkx" },
     { name = "pandas" },
     { name = "polars" },
     { name = "pyarrow" },
@@ -1438,6 +1428,10 @@ dependencies = [
     { name = "sqlalchemy" },
     { name = "sqlglot" },
     { name = "uvicorn" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fd/48/bacee76249440822abd4c3b5c5e5bd2d92cd8e78b074a940a1c7b6d742a0/squirrels-0.5.0.tar.gz", hash = "sha256:b6f9606816124c7c28a4949455820980e423a4e33012e59d31c645ef01d72c89", size = 167692, upload-time = "2025-10-27T13:59:23.33Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3e/49/6f20effef30bcb0e67b6e7fdbf4a12e47da1a04a1c728839827748c94bdf/squirrels-0.5.0-py3-none-any.whl", hash = "sha256:28319dfffbbb21e74418c2c57d814b75f22bf307dff186e64e56b4d8308f8da6", size = 203369, upload-time = "2025-10-27T13:59:21.918Z" },
 ]
 
 [[package]]

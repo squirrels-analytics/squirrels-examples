@@ -12,10 +12,10 @@ class CustomUserFields(auth.CustomUserFields):
     Example:
         organization: str | None = None
     """
-    role: Literal["manager", "employee"] = "employee"
+    role: Literal["manager", "staff", "customer"] = "staff"
 
 
-@auth.provider(name="google", label="Google", icon="https://www.google.com/favicon.ico")
+# @auth.provider(name="google", label="Google", icon="https://www.google.com/favicon.ico")
 def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
     """
     Provider configs for authenticating a user using Google credentials.
@@ -24,16 +24,18 @@ def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
     https://support.google.com/googleapi/answer/6158849?hl=en
     """
     def get_sqrl_user(claims: dict) -> auth.RegisteredUser:
-        custom_fields = CustomUserFields(role="employee")
+        custom_fields = CustomUserFields(role="customer")
         return auth.RegisteredUser(
             username=claims["email"],
             access_level="member",
             custom_fields=custom_fields
         )
 
+    # TODO: Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to the .env file
+    # Then, uncomment the @auth.provider decorator above and set the client_id and client_secret below
     provider_configs = auth.ProviderConfigs(
-        client_id=sqrl.env_vars["GOOGLE_CLIENT_ID"],
-        client_secret=sqrl.env_vars["GOOGLE_CLIENT_SECRET"],
+        client_id="", # sqrl.env_vars["GOOGLE_CLIENT_ID"],
+        client_secret="", # sqrl.env_vars["GOOGLE_CLIENT_SECRET"],
         server_url="https://accounts.google.com",
         client_kwargs={"scope": "openid email profile"},
         get_user=get_sqrl_user

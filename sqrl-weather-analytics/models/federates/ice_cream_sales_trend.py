@@ -21,8 +21,8 @@ def main(sqrl: ModelArgs) -> pl.LazyFrame:
     df_joined = df_joined.with_columns(temperature_c=pl.col("temperature_max"))
     
     # Collect the data from the lazyframe
-    temp_df = df_joined.select("temperature_c").collect().to_pandas().rename(columns={"temperature_c": "temp_c"})
-    prediction = model.predict(temp_df)
+    temperature_values = df_joined.select("temperature_c").collect().to_series().to_numpy().reshape(-1, 1)
+    prediction = model.predict(temperature_values)
     
     df_joined = df_joined.with_columns(expected_profit=pl.lit(np.round(prediction, 2)))
 

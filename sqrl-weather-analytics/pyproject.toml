@@ -3,9 +3,14 @@ name = "sqrl-weather-analytics"
 version = "0.1.0"
 description = "Example Squirrels project for weather analytics"
 readme = "README.md"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.14"
 dependencies = [
     "duckdb-engine>=0.17.0",
-    "scikit-learn==1.5.1",
-    "squirrels>=0.5.0",
+    "scikit-learn>=1.5.1",
+    "squirrels>=0.5.4",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.1.0",
 ]

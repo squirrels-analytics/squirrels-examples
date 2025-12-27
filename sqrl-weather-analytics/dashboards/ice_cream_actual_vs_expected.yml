@@ -1,0 +1,15 @@
+label: Ice Cream Profits vs Temperature
+
+description: Dashboard comparing actual ice cream profits with expected profits (based on the regression model) against the maximum temperature.
+
+scope: public
+
+format: png
+
+parameters:
+  - date_filter
+
+depends_on:
+  - name: ice_cream_sales_trend
+    dataset: ice_cream_sales_trend
+

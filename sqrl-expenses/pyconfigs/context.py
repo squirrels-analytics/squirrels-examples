@@ -1,5 +1,7 @@
-from typing import Any
+from typing import cast, Any
 from squirrels import arguments as args, parameters as p
+
+from pyconfigs.user import CustomUserFields
 
 
 def main(ctx: dict[str, Any], sqrl: args.ContextArgs) -> None:
@@ -10,6 +12,8 @@ def main(ctx: dict[str, Any], sqrl: args.ContextArgs) -> None:
     Note that the code here is used by all datasets, regardless of the parameters they use. You can use 
     sqrl.param_exists to determine the conditions to execute certain blocks of code.
     """
+    custom_fields = cast(CustomUserFields, sqrl.user.custom_fields)
+
     if sqrl.param_exists("group_by"):
         group_by_param = sqrl.prms["group_by"]
         assert isinstance(group_by_param, p.SingleSelectParameter)
@@ -21,12 +25,20 @@ def main(ctx: dict[str, Any], sqrl: args.ContextArgs) -> None:
 
         column_to_alias_mapping = {x: y for x, y in zip(columns, aliases) if not y.startswith("_")}
         order_by_cols = list(column_to_alias_mapping.values())
-        mask_column = lambda x: x if sqrl.user.custom_fields.role == "manager" else "'***MASKED***'"
-        x_as_y = lambda x, y: (mask_column(x) if x in ["description"] else x)+" as "+y
 
+        ctx["column_to_alias_mapping"] = column_to_alias_mapping
+        ctx["group_by_cols"] = order_by_cols if selected_id != "trans" else None
+
+        # Only used if federate_example is a Python model
+        mask_column = lambda x: x if custom_fields.role == "manager" else "***MASKED***"
+        ctx["order_by_cols"] = order_by_cols
+        ctx["mask_column_function"] = mask_column
+        
+        # Only used if federate_example is a SQL model
+        mask_column = lambda x: x if custom_fields.role == "manager" else "'***MASKED***'"
+        x_as_y = lambda x, y: (mask_column(x) if x in ["description"] else x)+" as "+y
         ctx["select_dim_cols"] = list(x_as_y(x, y) for x, y in column_to_alias_mapping.items())
         ctx["aggregator"] = "SUM" if selected_id != "trans" else ""
-        ctx["group_by_cols"] = order_by_cols if selected_id != "trans" else None
         ctx["order_by_cols_desc"] = list(y+" DESC" for y in order_by_cols)
         
     if sqrl.param_exists("start_date"):

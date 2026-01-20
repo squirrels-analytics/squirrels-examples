@@ -1,8 +1,9 @@
 from typing import Literal
-from squirrels import auth, arguments as args
+from squirrels.auth import CustomUserFields as BaseCustomUserFields, RegisteredUser, ProviderConfigs
+from squirrels.arguments import AuthProviderArgs
 
 
-class CustomUserFields(auth.CustomUserFields):
+class CustomUserFields(BaseCustomUserFields):
     """
     Extend the CustomUserFields class to add custom user attributes. 
     - Only the following types are supported: [str, int, float, bool, typing.Literal]
@@ -16,16 +17,16 @@ class CustomUserFields(auth.CustomUserFields):
 
 
 # @auth.provider(name="google", label="Google", icon="https://www.google.com/favicon.ico")
-def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
+def google_auth_provider(sqrl: AuthProviderArgs) -> ProviderConfigs:
     """
     Provider configs for authenticating a user using Google credentials.
 
     See the following page for setting up the CLIENT_ID and CLIENT_SECRET for Google specifically: 
     https://support.google.com/googleapi/answer/6158849?hl=en
     """
-    def get_sqrl_user(claims: dict) -> auth.RegisteredUser:
+    def get_sqrl_user(claims: dict) -> RegisteredUser:
         custom_fields = CustomUserFields(role="customer")
-        return auth.RegisteredUser(
+        return RegisteredUser(
             username=claims["email"],
             access_level="member",
             custom_fields=custom_fields
@@ -33,7 +34,7 @@ def google_auth_provider(sqrl: args.AuthProviderArgs) -> auth.ProviderConfigs:
 
     # TODO: Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to the .env file
     # Then, uncomment the @auth.provider decorator above and set the client_id and client_secret below
-    provider_configs = auth.ProviderConfigs(
+    provider_configs = ProviderConfigs(
         client_id="", # sqrl.env_vars["GOOGLE_CLIENT_ID"],
         client_secret="", # sqrl.env_vars["GOOGLE_CLIENT_SECRET"],
         server_url="https://accounts.google.com",

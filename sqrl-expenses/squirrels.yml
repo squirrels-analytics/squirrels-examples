@@ -1,7 +1,7 @@
 project_variables:
-  name: sample_expenses
+  name: expenses
   label: "Sample Expenses"
-  description: This is a sample squirrels project for analyzing expense transactions
+  description: This is a sample Squirrels project for analyzing expense transactions
   major_version: 1
   auth_type: optional                     ## one of 'optional' (default) or 'required'
 

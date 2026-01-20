@@ -1,0 +1,49 @@
+description: |
+  Aggregated weather metrics grouped by a user-selected time/attribute dimension (e.g. year, quarter, month, day of year, condition).
+
+depends_on:
+  - dbv_weather_by_date
+  - seed_month_names
+
+columns:
+  - name: dimension_type
+    type: string
+    description: The name of the selected grouping dimension
+    category: misc
+
+  - name: dimension_value
+    type: string
+    description: |
+      The value for the selected grouping dimension.
+      Possible values depend on `group_by_dim` (one of `year`, `quarter`, `month_name`, `day_of_year`, `condition`).
+    category: dimension
+    depends_on:
+      - dbv_weather_by_date.year
+      - dbv_weather_by_date.quarter
+      - seed_month_names.month_name
+      - dbv_weather_by_date.day_of_year
+      - dbv_weather_by_date.condition
+
+  - name: precipitation
+    description: Total precipitation for the group (cm)
+    depends_on:
+      - dbv_weather_by_date.precipitation
+    pass_through: true
+
+  - name: temperature_max
+    description: Maximum of daily maximum temperature for the group (Celsius)
+    depends_on:
+      - dbv_weather_by_date.temperature_max
+    pass_through: true
+
+  - name: temperature_min
+    description: Minimum of daily minimum temperature for the group (Celsius)
+    depends_on:
+      - dbv_weather_by_date.temperature_min
+    pass_through: true
+
+  - name: wind
+    description: Average wind speed for the group (km/h)
+    depends_on:
+      - dbv_weather_by_date.wind
+    pass_through: true

@@ -1,0 +1,44 @@
+description: |
+  Aggregated weather metrics over time using a selected period type (year/quarter/month/week) and an optional date range filter.
+
+depends_on:
+  - dbv_weather_by_date
+
+columns:
+  - name: period_type
+    type: string
+    description: The selected trend period type
+    category: misc
+
+  - name: reference_date
+    type: string
+    description: |
+      The start date of each period used for trending (value of `ctx.trend_dim_col`):
+      `start_of_year`, `start_of_quarter`, `start_of_month`, or `start_of_week`.
+    category: dimension
+    depends_on:
+      - dbv_weather_by_date.date
+
+  - name: precipitation
+    description: Total precipitation for the period (cm)
+    depends_on:
+      - dbv_weather_by_date.precipitation
+    pass_through: true
+
+  - name: temperature_max
+    description: Maximum of daily maximum temperature for the period (Celsius)
+    depends_on:
+      - dbv_weather_by_date.temperature_max
+    pass_through: true
+
+  - name: temperature_min
+    description: Minimum of daily minimum temperature for the period (Celsius)
+    depends_on:
+      - dbv_weather_by_date.temperature_min
+    pass_through: true
+
+  - name: wind
+    description: Average wind speed for the period (km/h)
+    depends_on:
+      - dbv_weather_by_date.wind
+    pass_through: true

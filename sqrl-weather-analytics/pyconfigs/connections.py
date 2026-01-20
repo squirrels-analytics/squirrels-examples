@@ -1,6 +1,7 @@
 from squirrels import ConnectionsArgs, ConnectionProperties
 from sqlalchemy import text
 from sklearn.linear_model import LinearRegression
+from pathlib import Path
 import json
 import numpy as np
 
@@ -11,7 +12,7 @@ def main(connections: dict[str, ConnectionProperties], sqrl: ConnectionsArgs) ->
     with connections["duckdb"].engine.connect() as conn:
         conn.execute(text("SELECT 1"))
     
-    with open("assets/ice_cream_sales_model.json", 'r') as f:
+    with open(Path(sqrl.project_path) / "resources" / "ice_cream_sales_model.json", 'r') as f:
         model_data = json.load(f)
         params = model_data["parameters"]
     

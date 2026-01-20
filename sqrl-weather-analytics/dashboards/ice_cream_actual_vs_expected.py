@@ -20,7 +20,7 @@ async def main(sqrl: DashboardArgs) -> d.PngDashboard:
     ax.plot(df['temperature_c'], df['expected_profit'], label='Expected Profit (Model)', color='red', linewidth=2)
     
     ax.set_title('Ice Cream Profits vs. Temperature')
-    ax.set_xlabel('Temperature (°C)')
+    ax.set_xlabel('Temperature (Celsius)')
     ax.set_ylabel('Profit ($)')
     ax.legend()
     ax.grid(True, linestyle='--', alpha=0.5)

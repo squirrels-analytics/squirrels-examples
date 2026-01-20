@@ -11,7 +11,7 @@ eager: false               # optional - defaults to false. Only applies to SQL m
 columns:
   - name: date
     type: string
-    condition: parameter 'group_by' (Group By) is 'trans' (Transaction)
+    condition: ['group_by == "Transaction"']
     description: The date of the transaction in 'YYYY-MM-DD' format, in descending order
     category: dimension
     depends_on:
@@ -19,7 +19,7 @@ columns:
   
   - name: description
     type: string
-    condition: parameter 'group_by' (Group By) is 'trans' (Transaction)
+    condition: ['group_by == "Transaction"']
     description: The description of the transaction (masked for non-manager users)
     category: dimension
     depends_on:
@@ -27,7 +27,7 @@ columns:
   
   - name: day
     type: string
-    condition: parameter 'group_by' (Group By) is 'day' (Day)
+    condition: ['group_by == "Day"']
     description: The day for which the amount is aggregated by, in descending order
     category: dimension
     depends_on:
@@ -35,7 +35,7 @@ columns:
   
   - name: month
     type: string
-    condition: parameter 'group_by' (Group By) is 'month' (Month)
+    condition: ['group_by == "Month"']
     description: The month for which the amount is aggregated by, in descending order
     category: dimension
     depends_on:
@@ -43,7 +43,7 @@ columns:
 
   - name: category
     type: string
-    condition: parameter `group_by` (Group By) is `trans` (Transaction), `cat` (Category), or `subcat` (Subcategory)
+    condition: ['group_by == "Transaction"', 'group_by == "Category"', 'group_by == "Subcategory"']
     description: The category for which the amount is aggregated by
     category: dimension
     depends_on:
@@ -51,7 +51,7 @@ columns:
   
   - name: subcategory
     type: string
-    condition: parameter `group_by` (Group By) is `trans` (Transaction) or `subcat` (Subcategory)
+    condition: ['group_by == "Transaction"', 'group_by == "Subcategory"']
     description: The subcategory for which the amount is aggregated by
     category: dimension
     depends_on:

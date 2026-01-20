@@ -1,10 +1,11 @@
 from typing import cast, Any
-from squirrels import arguments as args, parameters as p
+from squirrels.arguments import ContextArgs
+from squirrels import parameters as p
 
 from pyconfigs.user import CustomUserFields
 
 
-def main(ctx: dict[str, Any], sqrl: args.ContextArgs) -> None:
+def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
     """
     Define context variables AFTER parameter selections are made by adding entries to the dictionary "ctx". 
     These context variables can then be used in the models.

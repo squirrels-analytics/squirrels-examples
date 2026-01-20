@@ -12,29 +12,29 @@ columns:
       - src_weather.date
 
   - name: precipitation
-    type: float
-    description: The total amount of precipitation for the date in cm
+    type: decimal
+    description: Total precipitation for the date (cm)
     category: measure
     depends_on:
       - src_weather.precipitation
 
   - name: temperature_max
-    type: float
-    description: The maximum temperature for the date in degrees Celsius
+    type: decimal
+    description: Maximum temperature for the date (Celsius)
     category: measure
     depends_on:
       - src_weather.temp_max
 
   - name: temperature_min
-    type: float
-    description: The minimum temperature for the date in degrees Celsius
+    type: decimal
+    description: Minimum temperature for the date (Celsius)
     category: measure
     depends_on:
       - src_weather.temp_min
       
   - name: wind
-    type: float
-    description: The average wind speed for the date in km/h
+    type: decimal
+    description: Average wind speed for the date (km/h)
     category: measure
     depends_on:
       - src_weather.wind

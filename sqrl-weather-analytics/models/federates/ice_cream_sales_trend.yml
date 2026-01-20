@@ -1,5 +1,35 @@
-description: "This model predicts the expected profit of ice cream sales based on the temperature."
+description: |
+  Predicts the expected ice cream profit using a regression model and daily maximum temperature,
+  joined with actual daily ice cream profits.
 
 depends_on:
   - dbv_weather_by_date
   - dbv_ice_cream_sales
+
+columns:
+  - name: date
+    type: string
+    description: The date of the record in YYYY-MM-DD format
+    category: dimension
+    depends_on:
+      - dbv_weather_by_date.date
+      - dbv_ice_cream_sales.date
+
+  - name: ice_cream_profits
+    depends_on:
+      - dbv_ice_cream_sales.ice_cream_profits
+    pass_through: true
+
+  - name: temperature_c
+    description: The daily maximum temperature (in Celsius) used as the regression feature
+    category: dimension
+    depends_on:
+      - dbv_weather_by_date.temperature_max
+    pass_through: true
+
+  - name: expected_profit
+    type: decimal
+    description: The predicted ice cream profit (rounded to 2 decimals) from the regression model
+    category: measure
+    depends_on:
+      - dbv_weather_by_date.temperature_max

@@ -1,0 +1,12 @@
+description: Month names lookup table
+
+columns:
+  - name: month_order
+    type: integer
+    description: Month number (1-12)
+    category: dimension
+
+  - name: month_name
+    type: string
+    description: Month name (e.g. January)
+    category: dimension

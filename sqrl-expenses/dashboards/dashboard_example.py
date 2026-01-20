@@ -1,8 +1,9 @@
-from squirrels import arguments as args, dashboards as d
+from squirrels.arguments import DashboardArgs
+from squirrels.dashboards import PngDashboard, HtmlDashboard
 from matplotlib import pyplot as plt, figure as f, axes as a
 
 
-async def main(sqrl: args.DashboardArgs) -> d.PngDashboard:
+async def main(sqrl: DashboardArgs) -> PngDashboard | HtmlDashboard:
     spending_by_month_df = await sqrl.dataset("grouped_expenses", fixed_parameters={"group_by": "month"})
     spending_by_subcategory_df = await sqrl.dataset("grouped_expenses", fixed_parameters={"group_by": "subcat"})
 
@@ -31,4 +32,4 @@ async def main(sqrl: args.DashboardArgs) -> d.PngDashboard:
     subcategory_pandas.plot(y="total_amount", kind='pie', ax=ax1, autopct=autopct, legend=False, ylabel="")
     ax1.set_title("Spending by Subcategory")
     
-    return d.PngDashboard(fig)
+    return PngDashboard(fig)

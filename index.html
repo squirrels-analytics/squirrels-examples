@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Squirrels Examples</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height: 1.45;
+        margin: 0;
+        padding: 40px 20px;
+      }
+      main {
+        max-width: 880px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 0 0 10px 0;
+      }
+      p {
+        margin: 0 0 24px 0;
+        opacity: 0.9;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+      a.card {
+        display: block;
+        padding: 14px 16px;
+        border: 1px solid rgba(127, 127, 127, 0.35);
+        border-radius: 10px;
+        text-decoration: none;
+        color: inherit;
+      }
+      a.card:hover {
+        border-color: rgba(127, 127, 127, 0.6);
+      }
+      .title {
+        font-weight: 650;
+        margin: 0 0 4px 0;
+      }
+      .sub {
+        margin: 0;
+        opacity: 0.8;
+        font-size: 14px;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.95em;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Squirrels Examples</h1>
+      <p>Choose a project to open it in Squirrels Studio in a new tab.</p>
+
+      <ul>
+        <li>
+          <a class="card" href="{{EXPENSES_MOUNT_PATH}}" target="_blank">
+            <div class="title">Expense Analytics</div>
+            <p class="sub">Path: <code>{{EXPENSES_MOUNT_PATH}}</code></p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="{{MORTGAGE_MOUNT_PATH}}" target="_blank">
+            <div class="title">Mortgage Analytics</div>
+            <p class="sub">Path: <code>{{MORTGAGE_MOUNT_PATH}}</code></p>
+          </a>
+        </li>
+        <li>
+          <a class="card" href="{{WEATHER_MOUNT_PATH}}" target="_blank">
+            <div class="title">Weather Analytics</div>
+            <p class="sub">Path: <code>{{WEATHER_MOUNT_PATH}}</code></p>
+          </a>
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>

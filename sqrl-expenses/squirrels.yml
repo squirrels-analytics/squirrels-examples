@@ -31,6 +31,18 @@ connections:
     uri: {{ env_vars.SQLITE_URI }}        ## using Jinja to substitute environment variables
 
 
+configurables:
+  - name: user_name
+    label: User Name
+    default: John Doe
+    description: The name of the user to use for the expenses project
+
+  - name: user_role
+    label: User Role
+    default: staff
+    description: The role of the user to use for the expenses project
+
+
 datasets:
   - name: expense_transactions            ## model name uses same name unless "model" field is specified
     label: Expense Transactions - DBView Example

@@ -14,4 +14,4 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-squirrels = { git = "https://github.com/squirrels-analytics/squirrels" }
+squirrels = { git = "https://github.com/squirrels-analytics/squirrels.git" }

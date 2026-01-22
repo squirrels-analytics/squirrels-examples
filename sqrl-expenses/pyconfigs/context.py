@@ -15,6 +15,8 @@ def main(ctx: dict[str, Any], sqrl: ContextArgs) -> None:
     """
     custom_fields = cast(CustomUserFields, sqrl.user.custom_fields)
 
+    print(f"Configurables: {sqrl.configurables}")
+
     if sqrl.param_exists("group_by"):
         group_by_param = sqrl.prms["group_by"]
         assert isinstance(group_by_param, p.SingleSelectParameter)
